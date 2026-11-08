@@ -400,7 +400,7 @@ class Pokemon:
         # Evaluar si tu Pokémon quedó en pie al terminar el combate
         if self.salud_actual > 0:
             moneda = random.randint(150, 1200)
-            imprimir_con_retraso(f"\n ¡Has ganado el combate! Obtuviste \ ${moneda} ₽.\n")
+            imprimir_con_retraso(f"\n ¡Has ganado el combate! Obtuviste ${moneda} ₽.\n")
             
             # FÓRMULA DE EXPERIENCIA: Basada en el nivel del rival y un modificador por especie
             # Tomamos el ataque base del rival como factor de dificultad de la especie
