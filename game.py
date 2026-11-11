@@ -16,7 +16,8 @@ ARCHIVO_PARTIDA = "partida_pookemon.dat"
 # Las claves se guardan en minúscula y sin tildes; para mostrarlos
 # en pantalla se usa nombre_tipo().
 # ============================================================
- 
+
+# Tipo de Pokémon dispoinibles
 TIPOS = (
     "normal", "fuego", "agua", "electrico", "planta", "hielo", "lucha",
     "veneno", "tierra", "volador", "psiquico", "bicho", "roca", "fantasma",
@@ -88,11 +89,11 @@ def nombre_tipo(tipo):
 def efectividad_tipos(tipo_movimiento, tipos_defensor):
     '''Multiplicador total de un movimiento contra uno o dos tipos defensores.'''
 
-    multiplicador = 1.0
+    mult_total = 1.0
     for tipo in tipos_defensor:
         # Busca el multiplicador del tipo defensor en la tabla; si no existe, usa 1.0 (neutro)
-        multiplicador *= TABLA_TIPOS.get(tipo_movimiento, {}).get(tipo, 1.0)
-    return multiplicador
+        mult_total *= TABLA_TIPOS.get(tipo_movimiento, {}).get(tipo, 1.0)
+    return mult_total
 
 # ============================================================
 # CLASE MOVIMIENTO Y BASE DE DATOS GLOBAL DE MOVIMIENTOS
@@ -106,10 +107,8 @@ class Movimiento:
             raise ValueError(f"Tipo desconocido para {nombre}: {tipo}")
         if categoria not in ("fisico", "especial"):
             raise ValueError(f"Categoría inválida para {nombre}: {categoria}")
-        if not 1 <= precision <= 100:
-            raise ValueError(f"La precisión de {nombre} debe estar entre 1 y 100")
 
-        # Atributos Privados (Solo lectura mediante properties)
+        # Atributos Potegidos (Solo lectura mediante properties)
         self._nombre = nombre
         self._tipo = tipo
         self._categoria = categoria
@@ -149,7 +148,7 @@ class Movimiento:
     @precision.setter
     def precision(self, nuevo_valor):
         if not 1 <= nuevo_valor <= 100:
-            raise ValueError(f"La precisión de {self._nombre} debe estar entre 1 y 100")
+            raise ValueError(f"La precisión de {self.nombre} debe estar entre 1 y 100")
         self._precision = nuevo_valor
 
     # --- MÉTODOS DE LA CLASE ---
@@ -174,7 +173,7 @@ class Movimiento:
         return f"Movimiento({self.nombre!r}, {self.tipo!r}, {self.categoria!r}, {self.potencia}, {self.precision})"
  
  
-# COLECCIÓN tipo -> {nombre: (potencia, precisión)}
+# COLECCIÓN: tipo -> {nombre: (potencia, precisión)}
 _DATOS_MOVIMIENTOS = {
     "normal": {
         "Placaje": (35, 95), "Arañazo": (40, 100), "Destructor": (40, 100), "Ataque Rápido": (40, 100),
@@ -491,7 +490,7 @@ RUTAS = [
               "Gyarados", "Dragonite", "Rhydon", "Nidoking", "Nidoqueen", "Starmie", "Lapras",
               "Ninetales", "Snorlax"]},
 ]
- 
+
 
 def _validar_datos():
     """
@@ -543,7 +542,7 @@ def _validar_datos():
         # Comprobamos que cada Pokémon de la ruta exista en la Pokédex
         for especie in ruta["pool"]:
             if especie not in DICCIONARIO_POKEMON:
-                raise ValueError(f"{ruta['nombre']} usa una especie inexistente: {especie}")
+                raise ValueError(f"{ruta["nombre"]} usa una especie inexistente: {especie}")
 
 _validar_datos()
  
@@ -651,13 +650,15 @@ class Pokemon:
         if nombre not in DICCIONARIO_POKEMON:
             raise ValueError(f"Especie desconocida: {nombre}")
         datos = DICCIONARIO_POKEMON[nombre]
+        if not isinstance(nivel, int) or not 1 <= nivel <= NIVEL_MAXIMO:
+            raise ValueError(f"El nivel debe estar entre 1 y {NIVEL_MAXIMO}.")
  
         # PROTEGIDOS: Accesibles en herencia, protegidos del exterior
         self._nombre = nombre
         self._tipos = tuple(datos["tipos"])
  
         # PÚBLICOS
-        self.nivel = max(1, min(int(nivel), NIVEL_MAXIMO))
+        self.nivel = nivel
         self.exp_actual = exp_para_nivel(self.nivel)
         self.movimientos = generar_movimientos(nombre, self.nivel)
  
@@ -726,6 +727,18 @@ class Pokemon:
             barras = 1  
         return "=" * barras
 
+    # ---------------- ENCAPSULAMIENTO Y COMBATE ----------------
+    def _recibir_danio(self, cantidad):
+        """Método protegido: reduce los PS sin permitir valores negativos."""
+
+        cantidad = max(0, int(cantidad))
+        self.salud_actual = max(0, self.salud_actual - cantidad)
+
+    def recibir_danio(self, cantidad):
+        """Interfaz pública para recibir daño; puede especializarse en las hijas."""
+
+        self._recibir_danio(cantidad)
+
     # ---------------- PERSISTENCIA ----------------
     def exportar_datos(self):
         """Datos mínimos (tipos primitivos) para guardar el Pokémon."""
@@ -734,9 +747,9 @@ class Pokemon:
         lista_nombres_movimientos = []
         
         # Recorremos los objetos de tipo Movimiento que tiene el Pokémon
-        for ataque in self.movimientos:
+        for atq in self.movimientos:
             # Extraemos el texto del nombre del ataque y lo añadimos a la lista
-            lista_nombres_movimientos.append(ataque.nombre)
+            lista_nombres_movimientos.append(atq.nombre)
             
         # Armamos y devolvemos el diccionario final con los datos básicos
         return {
@@ -746,14 +759,34 @@ class Pokemon:
             "salud_actual": self.salud_actual,
             "movimientos": lista_nombres_movimientos
         }
-
+    
     @classmethod
     def cargar_datos(cls, datos):
         """Reconstruye un Pokémon guardado; las estadísticas se recalculan siempre."""
 
         # Extraemos el nombre y el nivel del diccionario para crear el objeto base
         # Usamos .get() por seguridad: si no hay nivel guardado, por defecto será 1
-        pokemon = cls(datos["nombre"], datos.get("nivel", 1))
+        nivel = datos.get("nivel", 1)
+
+        # Verificamos si el método fue invocado desde la clase padre y si el registro es del jugador
+        if cls is Pokemon and datos.get("clase") == "PokemonJugador":
+            pokemon = PokemonJugador(
+                datos["nombre"], nivel,
+                entrenador=datos.get("entrenador", "Entrenador"),
+                apodo=datos.get("apodo")
+            )
+        # Verificamos si fue invocado desde la clase padre y el registro corresponde a un Pokémon salvaje
+        elif cls is Pokemon and datos.get("clase") == "PokemonSalvaje":
+            # Instanciamos la subclase PokemonSalvaje recuperando su rareza y ruta de origen
+            pokemon = PokemonSalvaje(
+                datos["nombre"], nivel,
+                rareza=datos.get("rareza", "comun"),
+                ruta=datos.get("ruta", "Desconocida")
+            )
+        # Caso por defecto: ocurre cuando es un Pokémon base o cuando se llamó directamente desde una subclase
+        else:
+            # Creamos la instancia usando la clase exacta que invocó el método (cls)
+            pokemon = cls(datos["nombre"], nivel)
 
         # Asignamos la experiencia actual asegurando que tenga sentido para su nivel
         pokemon.exp_actual = max(datos.get("exp_actual", pokemon.exp_actual), exp_para_nivel(pokemon.nivel))
@@ -784,7 +817,7 @@ class Pokemon:
         '''Muestra la ficha técnica paginada del Pokémon.'''
 
         # Buscamos en qué rutas aparece este Pokémon para generar el texto de ubicación
-        notas_entrenador = describir_disponibilidad(self._nombre)
+        notas_entrenador = describir_disponibilidad(self.nombre)
     
         # PRECALCULAMOS LA BARRA DE EXPERIENCIA
         exp_base_nivel_actual = exp_para_nivel(self.nivel)
@@ -802,39 +835,36 @@ class Pokemon:
         pagina_actual = 1
 
         while True:
-            print("\n" + "=" * 50)
+            print("\n" + "=" * 58)
 
             if pagina_actual == 1:
                 # --- PÁGINA 1: DATOS BÁSICOS ---
-                print("=" * 50)
+                print("=" * 58)
                 print(f" INFO. POKéMON\t\t\tPÁGINA [1/2]")
-                print("=" * 50)
-                print(f" NOMBRE:   {self._nombre:<20} NIVEL:    {self.nivel}")
+                print("=" * 58)
+                print(f" NOMBRE:   {self.nombre:<20} NIVEL:    {self.nivel}")
                 print(f" TIPO:     {" / ".join(nombre_tipo(tipo) for tipo in self._tipos)}")
-                print("-" * 50)
+                print("-" * 58)
                 print(" NOTAS DE LA POKÉDEX 📝")
                 print(f" {notas_entrenador}")
-                print("=" * 50)
+                print("=" * 58)
                 print(" MOVIMIENTOS")
                 for mov in self.movimientos:
                     print(f"  {mov.resumen()}")
-                print("=" * 50)
+                print("=" * 58)
                 print("\n [ENTER] Ver Habilidades  |  [X] Volver al Menú")
 
             else:
                 # --- PÁGINA 2: ESTADÍSTICAS ---
                 print(f" HABIL. POKéMON\t\t\tPÁGINA [2/2]")
-                print("=" * 50)
-                print(f" NIVEL:  {self.nivel:<10} PS:   {self.salud_actual}/{self.salud_maxima}")
-                print(f"                      PS:  [{self.barra_de_vida:<20}]")
-                print(f" ATAQUE:      {self.ataque:<8} DEFENSA:      {self.defensa}")
-                print(f" ATQ. ESP.:   {self.ataque_especial:<8} DEF. ESP.:    {self.defensa_especial}")
-                print(f" VELOCIDAD:   {self.velocidad}")
-                print("-" * 50)
-                print(f" EXPERIENCIA. ✨")
-                print(f" PUNTOS EXP: {self.exp_actual:<10} SIG. NIVEL: {self.__exp_siguiente_nivel}")
-                print(f"          EXP: [{barra_visual_exp:<10}]")
-                print("=" * 50)
+                print("=" * 58)
+                print(f" Nv.{self.nivel:<13} PS: [{self.barra_de_vida:<20}] {self.salud_actual}/{self.salud_maxima}")
+                print(f" ATAQUE    {self.ataque:<6} DEFENSA    {self.defensa}")
+                print(f" ATQ. ESP. {self.ataque_especial:<6} DEF.ESP.   {self.defensa_especial:<6} VELOCIDAD {self.velocidad}")
+                print("-" * 58)
+                print(f" EXPERIENCIA. ✨        EXP [{barra_visual_exp:<10}]")
+                print(f" PUNTOS EXP. {self.exp_actual:<10} SIG. NIVEL {self.__exp_siguiente_nivel}")
+                print("=" * 58)
                 print("\n [ENTER] Ver Datos Básicos  |  [X] Volver al Menú")
 
             # Captura la entrada del jugador
@@ -862,7 +892,7 @@ class Pokemon:
             # Recalculamos cuánta EXP necesitará para el próximo nivel
             self.__exp_siguiente_nivel = exp_para_nivel(self.nivel + 1)
             
-            imprimir_con_retraso(f"\n ¡Felicidades! ¡{self._nombre} subió al Nivel {self.nivel}! 🎉\n")
+            imprimir_con_retraso(f"\n ¡Felicidades! ¡{self.nombre} subió al Nivel {self.nivel}! 🎉\n")
             time.sleep(2)
             
         # ACTUALIZACIÓN DE ESTADÍSTICAS (Si subió al menos un nivel)
@@ -886,7 +916,7 @@ class Pokemon:
             for mov in nuevos:
                 # Si es un movimiento que no conocía antes, lo aprende
                 if mov.nombre not in conocidos:
-                    imprimir_con_retraso(f" ¡{self._nombre} aprendió {mov.nombre}!\n")
+                    imprimir_con_retraso(f" ¡{self.nombre} aprendió {mov.nombre}!\n")
             
             # Actualizamos la lista oficial del Pokémon
             self.movimientos = nuevos
@@ -897,7 +927,7 @@ class Pokemon:
         Calcula el daño real que causará un movimiento sobre un objetivo,
         aplicando las reglas de categorías, STAB, efectividad y aleatoriedad de la Gen III.
         
-        Devuelve un grupo: (daño_final, multiplicador_efectividad).
+        Devuelve un grupo: (daño_final, mult_toal_efectividad).
         '''
         # COMPROBAMOS LA EFECTIVIDAD DE TIPOS
         efectividad = efectividad_tipos(movimiento.tipo, objetivo.tipos)
@@ -937,14 +967,14 @@ class Pokemon:
         según las efectividades y actualiza los PS del Pokémon defensor.
         """
         # IDENTIFICAMOS QUIÉN ATACA PARA EL TEXTO
-        quien = f"El {self._nombre} rival" if es_rival else self._nombre
+        quien = f"El {self.nombre} rival" if es_rival else self.nombre
 
         imprimir_con_retraso(f"\n {quien} usó {movimiento.nombre}!")
         time.sleep(1)
 
         # COMPROBAMOS SI EL ATAQUE ACERTA O FALLA (Precisión)
         if not movimiento.impacta():
-            imprimir_con_retraso(f"\n ¡El ataque de {self._nombre} falló!\n")
+            imprimir_con_retraso(f" ¡El ataque de {self.nombre} falló!\n")
             return
 
         # CALCULAMOS EL DAÑO Y VERIFICAMOS INMUNIDADES
@@ -956,16 +986,16 @@ class Pokemon:
         # APLICAMOS EL DAÑO REDUCIENDO LOS PS DEL DEFENSOR (Mínimo 0)
         defensor.salud_actual = max(0, defensor.salud_actual - danio)
 
-        # NOTIFICAMOS LA EFECTIVIDAD DEL GOLPE AL JUGADO
+        # NOTIFICAMOS LA EFECTIVIDAD DEL GOLPE AL JUGADOR
         if efectividad > 1:
-            imprimir_con_retraso("\n ¡Es muy eficaz!\n")
+            imprimir_con_retraso(" ¡Es muy eficaz!\n")
         elif efectividad < 1:
-            imprimir_con_retraso("\n No es muy eficaz...\n")
+            imprimir_con_retraso(" No es muy eficaz...\n")
         else:
-            imprimir_con_retraso("\n")
+            imprimir_con_retraso(" ¡El ataque impactó!\n")
 
     def _elegir_movimiento(self):
-        print(f"\n ¡Adelante {self._nombre}!")
+        print(f"\n ¡Adelante {self.nombre}!")
         # MOSTRAMOS LA LISTA DE MOVIMIENTOS EN PANTALLA
         for i, mov in enumerate(self.movimientos, start=1):
             print(f" {i}. {mov.resumen()}")
@@ -1033,8 +1063,8 @@ class Pokemon:
 
         # EVALUAMOS EL RESULTADO DE LA BATALLA
         if self.salud_actual > 0:
+
             # --- ESCENARIO DE VICTORIA ---
-            
             # Generamos la recompensa económica aleatoria (Pokedólares ₽)
             moneda = random.randint(150, 1200)
             imprimir_con_retraso(f"\n ¡Has ganado el combate! Obtuviste ${moneda} ₽.\n")
@@ -1042,14 +1072,69 @@ class Pokemon:
             # Calculamos la experiencia ganada usando la base del rival y su nivel
             base_exp = DICCIONARIO_POKEMON[rival.nombre]["exp_base"]
             exp_ganada = max(1, int(base_exp * rival.nivel / 7)) # Aseguramos un mínimo de 1 EXP
-            imprimir_con_retraso(f" ¡{self._nombre} ganó {exp_ganada} puntos de EXP! ✨\n")
+            imprimir_con_retraso(f" ¡{self.nombre} ganó {exp_ganada} puntos de EXP! ✨\n")
 
             # Aplicamos la experiencia y verificamos si sube de nivel
             self.exp_actual += exp_ganada
             self.comprobar_subida_nivel()
         else:
             # --- ESCENARIO DE DERROTA ---
-            imprimir_con_retraso(f"\n ¡{self._nombre} no puede continuar! Corre al Centro Pokémon...\n")
+            imprimir_con_retraso(f"\n ¡{self.nombre} no puede continuar! Corre al Centro Pokémon...\n")
+
+# ============================================================
+# CLASES HIJAS: POKÉMON DEL JUGADOR Y POKÉMON SALVAJE
+# ============================================================
+
+class PokemonJugador(Pokemon):
+    """Pokémon que pertenece al entrenador y puede tener un apodo."""
+
+    def __init__(self, nombre, nivel=1, entrenador="Entrenador", apodo=None):
+        super().__init__(nombre, nivel)
+        if not isinstance(entrenador, str) or not entrenador.strip():
+            raise ValueError("El nombre del entrenador no puede estar vacío.")
+        if apodo is not None:
+            if not isinstance(apodo, str) or not apodo.strip():
+                raise ValueError("El apodo debe contener texto.")
+            if len(apodo.strip()) > 15:
+                raise ValueError("El apodo no puede superar los 15 caracteres.")
+        self.entrenador = entrenador.strip()
+        self.apodo = apodo.strip() if apodo else None
+
+    def recibir_danio(self, cantidad):
+        """El Pokémon del jugador recibe daño mediante el método heredado."""
+
+        super().recibir_danio(cantidad)
+
+    def exportar_datos(self):
+        datos = super().exportar_datos()
+        datos.update({"entrenador": self.entrenador, "apodo": self.apodo})
+        return datos
+
+
+class PokemonSalvaje(Pokemon):
+    """Pokémon encontrado durante la exploración de una ruta."""
+
+    RAREZAS_VALIDAS = ("comun", "raro", "muy raro")
+
+    def __init__(self, nombre, nivel=1, rareza="comun", ruta="Desconocida"):
+        super().__init__(nombre, nivel)
+        if rareza not in self.RAREZAS_VALIDAS:
+            raise ValueError(
+                f"Rareza inválida. Usa una de estas opciones: {', '.join(self.RAREZAS_VALIDAS)}."
+            )
+        if not isinstance(ruta, str) or not ruta.strip():
+            raise ValueError("La ruta del Pokémon salvaje no puede estar vacía.")
+        self.rareza = rareza
+        self.ruta = ruta.strip()
+
+    def recibir_danio(self, cantidad):
+        """El Pokémon salvaje recibe daño mediante el método heredado."""
+        super().recibir_danio(cantidad)
+
+    def exportar_datos(self):
+        datos = super().exportar_datos()
+        datos.update({"rareza": self.rareza, "ruta": self.ruta})
+        return datos
 
 # ============================================================
 # PERSISTENCIA (GUARDAR Y CARGAR PARTIDA)
@@ -1092,7 +1177,7 @@ def cargar_partida():
                 "nivel": antiguo.get("nivel", 5),
                 "exp_actual": antiguo.get("exp_actual", 0),
                 "salud_actual": antiguo.get("salud_actual"),
-                "movimientos": [m.nombre for m in antiguo.get("movimientos", [])] if hasattr(pokemon_guardado, "movimientos") else []
+                "movimientos": [m.nombre for m in (antiguo.get("movimientos") or [])]
             }
             pokemon = Pokemon.cargar_datos(datos_adaptados)
         
@@ -1119,7 +1204,7 @@ def explorar_ruta(numero_ruta):
     imprimir_con_retraso(ruta["mensaje"])
     especie = random.choice(ruta["pool"])
     nivel = random.randint(*ruta["niveles"])
-    return Pokemon(especie, nivel)
+    return PokemonSalvaje(especie, nivel, rareza="comun", ruta=ruta["nombre"])
  
 
 # ============================================================
@@ -1151,7 +1236,7 @@ def nueva_partida():
             print(" Debes introducir un número entero.")
 
     especie = INICIALES[opcion]
-    mi_pokemon = Pokemon(especie, 5)
+    mi_pokemon = PokemonJugador(especie, 5, entrenador=nombre_entrenador)
 
     print(f"\n¡Felicidades, {nombre_entrenador}!")
     print(f"¡{especie} será tu compañero de aventuras!")
@@ -1218,14 +1303,14 @@ def main():
     # CONTROL DE ARRANQUE E INICIALIZACIÓN DE DATOS
     while True:
         try:
-            opcion_inicio = int(input("\n Selecciona una opción: "))
-            if opcion_inicio in (1, 2):
+            op = int(input("\n Selecciona una opción: "))
+            if op in (1, 2):
                 break
             print(" ❌ Por favor, selecciona 1 o 2.")
         except ValueError:
             print(" ❌ Introduce un número válido.")
 
-    if opcion_inicio == 1:
+    if op == 1:
         datos_partida = cargar_partida()
 
         if datos_partida:
@@ -1250,13 +1335,13 @@ def main():
         print(" [5] ❌ Salir del Juego")
 
         try:
-            opcion_menu = int(input("\n¿Qué deseas hacer?: "))
+            op_menu = int(input("\n¿Qué deseas hacer?: "))
         except ValueError:
             print("\n ⚠️ Por favor, introduce un número del 1 al 5.")
             continue
 
         # GESTIÓN DE LAS ACCIONES DEL JUEGO
-        match opcion_menu:
+        match op_menu:
             case 1:
                 # Bloqueo de seguridad: Evita combatir si el Pokémon no tiene PS
                 if mi_pokemon.salud_actual <= 0:
@@ -1290,5 +1375,33 @@ def main():
                 time.sleep(.5)
 
 
+def pruebas_basicas():
+    """Pruebas sencillas de clases, herencia, validación y efectividad."""
+    pokemon = Pokemon("Pikachu", 5)
+    assert pokemon.nombre == "Pikachu"
+    assert efectividad_tipos("agua", ("fuego",)) == 2.0
+
+    jugador = PokemonJugador("Charmander", 5, entrenador="Prueba")
+    assert jugador.entrenador == "Prueba"
+    assert isinstance(jugador, Pokemon)
+
+    salvaje = PokemonSalvaje("Rattata", 4, rareza="comun", ruta="Ruta 1")
+    assert isinstance(salvaje, Pokemon)
+
+    vida_inicial = jugador.salud_actual
+    jugador.recibir_danio(3)
+    assert jugador.salud_actual == max(0, vida_inicial - 3)
+
+    try:
+        PokemonJugador("Charmander", 5, entrenador="")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("La validación del entrenador no rechazó un nombre vacío.")
+
+    print("✓ Pruebas básicas superadas.\n")
+
+
 if __name__ == "__main__":
+    pruebas_basicas()
     main()
