@@ -9,7 +9,7 @@ El objetivo del proyecto fue aplicar conceptos sólidos de programación estruct
 ## 👥 Autores y Colaboradores
 Este proyecto fue realizado en equipo por:
 * **Samuel Alberto Castañeda Barros** - [@Samux2208](https://github.com/Samux2208)
-* **Adrian Fernando Caicedo Cejia** - [@usuario_github_compañero](https://github.com)
+* **Adrian Fernando Caicedo Cejia** - [@anADRIAN18](https://github.com)
 
 ---
 
