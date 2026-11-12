@@ -9,7 +9,11 @@ import pickle
  
 RETRASO_TEXTO = 0.05      # Segundos entre letras en imprimir_con_retraso
 NIVEL_MAXIMO = 100
-ARCHIVO_PARTIDA = "partida_pookemon.dat"
+
+import os
+# Obtiene la ruta absoluta de la carpeta donde se encuentra este archivo game.py
+CARPETA_ACTUAL = os.path.dirname(os.path.abspath(__file__))
+ARCHIVO_PARTIDA = os.path.join(CARPETA_ACTUAL, "partida_pookemon.dat")
 
 # ============================================================
 # TIPOS Y TABLA DE EFECTIVIDADES (GEN III: 17 TIPOS)
@@ -753,6 +757,7 @@ class Pokemon:
             
         # Armamos y devolvemos el diccionario final con los datos básicos
         return {
+            "clase": self.__class__.__name__,
             "nombre": self._nombre,
             "nivel": self.nivel,
             "exp_actual": self.exp_actual,
@@ -767,16 +772,17 @@ class Pokemon:
         # Extraemos el nombre y el nivel del diccionario para crear el objeto base
         # Usamos .get() por seguridad: si no hay nivel guardado, por defecto será 1
         nivel = datos.get("nivel", 1)
+        tipo_clase = datos.get("clase")
 
         # Verificamos si el método fue invocado desde la clase padre y si el registro es del jugador
-        if cls is Pokemon and datos.get("clase") == "PokemonJugador":
+        if tipo_clase == "PokemonJugador":
             pokemon = PokemonJugador(
                 datos["nombre"], nivel,
                 entrenador=datos.get("entrenador", "Entrenador"),
                 apodo=datos.get("apodo")
             )
         # Verificamos si fue invocado desde la clase padre y el registro corresponde a un Pokémon salvaje
-        elif cls is Pokemon and datos.get("clase") == "PokemonSalvaje":
+        elif tipo_clase == "PokemonSalvaje":
             # Instanciamos la subclase PokemonSalvaje recuperando su rareza y ruta de origen
             pokemon = PokemonSalvaje(
                 datos["nombre"], nivel,
@@ -1045,7 +1051,7 @@ class Pokemon:
                 for atacante, defensor, mov, es_rival in acciones:
                     atacante.atacar(defensor, mov, es_rival)
                     mostrar_barras(self, rival)
-                    time.sleep(2)
+                    time.sleep(1)
 
                     # CONTROL DE DEBILITACIÓN INMEDIATA
                     # Si el defensor cae debilitado por el primer golpe, cortamos la ronda
@@ -1265,7 +1271,7 @@ def menu_rutas(mi_pokemon):
         for i, ruta in enumerate(RUTAS, start=1):
             nivel_min, nivel_max = ruta["niveles"]
             print(f" [{i}] {ruta["nombre"]} (Nivel {nivel_min}-{nivel_max})")
-        print(f" [{volver}] ↩️ Volver al Menú Principal")
+        print(f" [{volver}] ↩️  Volver al Menú Principal")
  
         # CAPTURA SEGURA DE LA SELECCIÓN DEL JUGADOR
         try:
