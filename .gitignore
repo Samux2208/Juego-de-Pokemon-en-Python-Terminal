@@ -1,0 +1,20 @@
+# Caché de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Partidas guardadas personales y respaldos locales
+partida*.json
+partida*.dat
+*.tmp
+*.corrupto
+backups/
+
+# Configuración local del editor
+.vscode/
+.idea/
