@@ -1,0 +1,31 @@
+<mxfile host="app.diagrams.net" modified="2026-11-18T21:00:00.000Z" agent="ChatGPT" version="24.7.17" type="device">
+  <diagram id="pokemon-poo-entrega1" name="Clases Entrega 1">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="pokemon" value="&lt;b&gt;Pokemon&lt;/b&gt;&lt;hr&gt;&lt;b&gt;+ Público&lt;/b&gt;&lt;br&gt;+ nivel: int&lt;br&gt;+ exp_actual: int&lt;br&gt;+ movimientos: list&lt;br&gt;+ estado_alterado: str | None&lt;br&gt;&lt;b&gt;# Protegido&lt;/b&gt;&lt;br&gt;# _nombre: str&lt;br&gt;# _tipos: tuple&lt;br&gt;# _salud_actual: int&lt;br&gt;# _estados: dict&lt;br&gt;&lt;b&gt;- Privado&lt;/b&gt;&lt;br&gt;- __naturaleza: str&lt;br&gt;- __exp_siguiente_nivel: int&lt;br&gt;- __estadisticas: dict&lt;hr&gt;&lt;b&gt;+ Métodos / propiedades&lt;/b&gt;&lt;br&gt;+ nombre, salud_actual, salud_maxima (@property)&lt;br&gt;+ recibir_danio(cantidad)&lt;br&gt;+ curar(cantidad)&lt;br&gt;# _restaurar_estado_comun(pokemon, datos) [classmethod]" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#ffffff;strokeColor=#1b3b73;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="440" y="80" width="500" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="jugador" value="&lt;b&gt;PokemonJugador&lt;/b&gt;&lt;hr&gt;&lt;b&gt;+ Público&lt;/b&gt;&lt;br&gt;+ entrenador: str&lt;br&gt;+ apodo: str | None&lt;hr&gt;+ __init__(nombre, nivel, entrenador, apodo)&lt;br&gt;+ nombre_visible (@property)&lt;br&gt;+ exportar_datos()&lt;br&gt;+ cargar_datos(datos)" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#ffffff;strokeColor=#1b3b73;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="80" y="590" width="390" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="salvaje" value="&lt;b&gt;PokemonSalvaje&lt;/b&gt;&lt;hr&gt;&lt;b&gt;+ Público&lt;/b&gt;&lt;br&gt;+ rareza: str&lt;br&gt;+ ruta: str&lt;br&gt;+ RAREZAS_VALIDAS: tuple&lt;hr&gt;+ __init__(nombre, nivel, rareza, ruta)&lt;br&gt;+ exportar_datos()&lt;br&gt;+ cargar_datos(datos)" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#ffffff;strokeColor=#1b3b73;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="520" y="590" width="390" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="equipo" value="&lt;b&gt;Equipo&lt;/b&gt;&lt;hr&gt;&lt;b&gt;- Privado&lt;/b&gt;&lt;br&gt;- __pokemon: list[Pokemon]&lt;br&gt;- __pc: list[Pokemon]&lt;hr&gt;&lt;b&gt;+ Público&lt;/b&gt;&lt;br&gt;+ pokemon (@property)&lt;br&gt;+ pc (@property)&lt;br&gt;+ enviar_al_pc(indice)&lt;br&gt;+ recuperar_del_pc(indice)&lt;br&gt;+ intercambiar_en_equipo(a, b)" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#ffffff;strokeColor=#1b3b73;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="250" width="310" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="es un" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=0;strokeColor=#1b3b73;" edge="1" parent="1" source="jugador" target="pokemon">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="es un" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=0;strokeColor=#1b3b73;" edge="1" parent="1" source="salvaje" target="pokemon">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="contiene Pokémon activos y en PC" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=diamond;startFill=1;endArrow=none;strokeColor=#1b3b73;" edge="1" parent="1" source="equipo" target="pokemon">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

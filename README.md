@@ -6,6 +6,24 @@ Diseñado como proyecto de **Ingeniería** para aplicar arquitectura modular, di
 
 ---
 
+## 🎯 Definición del Juego
+
+### Nombre del Juego
+**Pokémon Console Adventure — Edición Rojo Fuego / Verde Hoja (Gen III)**
+
+### Objetivo del Juego
+El jugador asume el papel de un entrenador Pokémon que inicia su aventura en la región de Kanto. Su objetivo es explorar las distintas rutas, capturar Pokémon salvajes, formar y entrenar un equipo competitivo, evolucionar a sus criaturas y superar los combates y desafíos de la región gestionando estratégicamente sus recursos.
+
+### Reglas del Juego
+1. **Elección inicial:** Al comenzar una nueva partida, el entrenador debe elegir un Pokémon inicial entre **Charmander**, **Squirtle** o **Bulbasaur** entregado por el Profesor Oak.
+2. **Límite de equipo activo:** El entrenador puede llevar un máximo de **6 Pokémon activos** en su equipo; cualquier Pokémon adicional capturado se envía automáticamente al almacenamiento del **PC de Bill**.
+3. **Combate por turnos y PP:** Las batallas se desarrollan por turnos. Cada ataque consume **Puntos de Poder (PP)** y el daño se calcula según estadísticas base, naturalezas, bonificación por mismo tipo (**STAB**) y efectividad elemental de Gen III (si se agotan todos los PP, el Pokémon usa *Forcejeo* y recibe daño de retroceso).
+4. **Debilitamiento y recuperación:** Un Pokémon cuya salud (`PS`) llega a `0` queda debilitado y no puede combatir hasta ser curado con objetos de la mochila o recuperado en un **Centro Pokémon**.
+5. **Captura exclusiva de salvajes:** Solo es posible capturar Pokémon salvajes (nunca Pokémon de otros entrenadores) utilizando **Poké Balls** de la mochila; la probabilidad de éxito depende de la salud restante del objetivo, su estado alterado y su ratio de captura.
+6. **Economía y persistencia:** El jugador gana pokémonedas (`₽`) al vencer en combate para comprar objetos en la tienda y puede guardar o cargar su partida en cualquier momento desde el menú principal.
+
+---
+
 ## ✨ Características Principales
 
 * **Base de Datos Oficial Gen III (151 Pokémon de Kanto):** Estadísticas base, experiencias base (tope 255), ratios de captura, descripciones en español y *learnsets* oficiales por nivel extraídos y adaptados desde PokéAPI.
@@ -18,6 +36,21 @@ Diseñado como proyecto de **Ingeniería** para aplicar arquitectura modular, di
 * **Economía, Mochila y Tienda Pokémon:** Sistema de pokémonedas (`₽`), compra de Poké Balls, pociones y piedras evolutivas, además de captura de Pokémon salvajes en 11 rutas de Kanto.
 * **Progresión y Evolución:** Subida de nivel, aprendizaje automático de movimientos y evolución por nivel o por objeto.
 * **Persistencia Segura en JSON:** Guardado atómico mediante archivos temporales, respaldo automático (`backup`), validación de esquemas y sistema de migraciones de versión.
+
+---
+
+## 🧱 Diseño Orientado a Objetos (POO)
+
+La jerarquía principal de entidades del proyecto aplica herencia, polimorfismo y encapsulamiento:
+
+* **`Pokemon` (Clase madre):** Define los atributos y comportamientos comunes de cualquier criatura (estadísticas, movimientos, salud, estados y cálculo de daño).
+* **`PokemonJugador(Pokemon)` (Clase hija):** Extiende la clase base incorporando el nombre del entrenador, apodo personalizado, experiencia acumulada y control de subida de nivel.
+* **`PokemonSalvaje(Pokemon)` (Clase hija):** Extiende la clase base incorporando la ruta de aparición, rareza y parámetros específicos para el cálculo de captura.
+
+### Encapsulamiento en `Pokemon`
+* **Público (`+`):** `nivel`, `exp_actual`, `movimientos`, `estado_alterado` y propiedades (`@property`) como `nombre`, `salud_actual` y `salud_maxima`.
+* **Protegido (`#`):** `_nombre`, `_tipos`, `_salud_actual`, `_estados` y el método de clase `_restaurar_estado_comun()`.
+* **Privado (`-`):** `__naturaleza`, `__exp_siguiente_nivel` y `__estadisticas`.
 
 ---
 
@@ -52,11 +85,17 @@ pokemon_frlg/
 │   └── validacion.py        # Verificación de integridad de archivos guardados
 ├── interfaz/                # Capa de presentación en consola
 │   ├── menus.py             # Menús interactivos (Rutas, Pueblo, PC, Tienda)
+│   ├── demo_entrega1.py     # Menú académico reducido de demostración POO
 │   ├── pokedex_ui.py        # Ficha técnica paginada de cada Pokémon
 │   └── mensajes.py          # Efectos de texto y alineación exacta con emojis
-└── datos/                   # Bases de datos generadas en formato JSON
-    ├── pokemon_gen3.json
-    └── movimientos_gen3.json
+├── datos/                   # Bases de datos generadas en formato JSON
+│   ├── pokemon_gen3.json
+│   └── movimientos_gen3.json
+├── tests/                   # Pruebas automatizadas con assert
+│   ├── test_basicos.py
+│   └── test_entrega1.py
+├── README.md                # Documentación principal del proyecto
+└── AVANCES.md               # Bitácora de sprints, arquitectura y evolución
 ```
 
 ---
@@ -69,18 +108,24 @@ pokemon_frlg/
    cd Juego-de-Pokemon-en-Python-Terminal
    ```
 
-
 2. **Requisitos:** Python **3.10 o superior** (no requiere librerías externas; usa únicamente la biblioteca estándar de Python).
 
-3. **Inicia la aventura:**
+3. **Preparar los datos (solo si faltan los archivos JSON en `datos/`):**
+   ```bash
+   python -m servicios.descargar_datos
+   ```
+
+4. **Inicia la aventura:**
    ```bash
    python main.py
    ```
+   *(El menú principal incluye la opción **Demostración POO I** para la revisión académica rápida).*
 
-*(Opcional) Si deseas regenerar las bases de datos desde PokéAPI:*
-```bash
-python -m servicios.descargar_datos
-```
+5. **Ejecutar las pruebas unitarias:**
+   ```bash
+   python -m tests.test_basicos
+   python -m tests.test_entrega1
+   ```
 
 ---
 
@@ -88,5 +133,5 @@ python -m servicios.descargar_datos
 
 Este proyecto fue realizado en equipo por:
 
-* **Samuel Alberto Castañeda Barros** — [@Samux2208](https://github.com)
-* **Adrian Fernando Caicedo Cejia** — [@anADRIAN18](https://github.com)
+* **Samuel Alberto Castañeda Barros** — [@Samux2208](https://github.com/Samux2208)
+* **Adrian Fernando Caicedo Cejia** — [@anADRIAN18](https://github.com/anADRIAN18)

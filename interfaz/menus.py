@@ -75,7 +75,8 @@ def gestionar_equipo(equipo):
                 continue
 
             print("\n 🖥️  Pokémon en la Caja del PC:")
-            for i, pokemon in enumerate(equipo.pc, start=1):
+            for i, p in enumerate(equipo.pc, start=1):
+                estado = "❤️" if p.salud_actual > 0 else "💀"
                 print(f"  [{i}] {p.nombre_visible:<15} Nv.{p.nivel:<3} | {estado} PS {p.salud_actual}/{p.salud_maxima}")
 
             try:
