@@ -72,7 +72,7 @@ class Pocion(Objeto):
 
         # Validamos si el Pokémon ya tiene su salud al máximo
         if pokemon.salud_actual >= pokemon.salud_maxima:
-            imprimir_con_retraso(f" ¡La vida de {pokemon.nombre_visible} ya está al máximo! No se puede curar.")
+            imprimir_con_retraso(f"❤️  ¡La vida de {pokemon.nombre_visible} ya está al máximo! No se puede curar.\n")
             return 0
         return pokemon.curar(self.curacion)
 
