@@ -1,7 +1,7 @@
 # ==================================================
 # ARCHIVO: interfaz/pokedex_ui.py
 # ==================================================
-from config import nombre_tipo
+from datos.tipos_evoluciones import nombre_tipo
 from interfaz.mensajes import nombre_tipo, resumen_movimiento, ajustar_ancho
 from sistemas.pokedex import describir_disponibilidad
 from sistemas.estadisticas import exp_para_nivel, NATURALEZAS

@@ -1,5 +1,5 @@
-from config import EVOLUCIONES_NIVEL, EVOLUCIONES_OBJETO
-from servicios.repositorio import DICCIONARIO_POKEMON
+from datos.tipos_evoluciones import EVOLUCIONES_NIVEL
+from servicios.catalogos import DICCIONARIO_POKEMON
 from sistemas.estadisticas import generar_movimientos
 
 def evolucionar_pokemon(pokemon, nueva_especie):

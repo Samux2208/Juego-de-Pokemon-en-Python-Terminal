@@ -1,7 +1,7 @@
 import random
 import copy
-from config import TABLA_TIPOS, _CLAVES_STATS
-from servicios.repositorio import DICCIONARIO_MOVIMIENTOS, DICCIONARIO_POKEMON
+from datos.tipos_evoluciones import TABLA_TIPOS, CLAVES_STATS
+from servicios.catalogos import DICCIONARIO_MOVIMIENTOS, DICCIONARIO_POKEMON
 
 # 25 Naturalezas Oficiales de Gen III: (estadistica_sube_10%, estadistica_baja_10%)
 NATURALEZAS = {
@@ -55,14 +55,14 @@ def exp_para_nivel(nivel):
 
 def calcular_estadisticas(base, nivel, naturaleza="Fuerte", ivs=None, evs=None):
     '''Fórmula oficial de Gen III para calcular PS y las 5 estadísticas de combate.'''
-    ivs = ivs or {k: 15 for k in _CLAVES_STATS}
-    evs = evs or {k: 0 for k in _CLAVES_STATS}
+    ivs = ivs or {k: 15 for k in CLAVES_STATS}
+    evs = evs or {k: 0 for k in CLAVES_STATS}
     sube, baja = NATURALEZAS.get(naturaleza, (None, None))
     stats = {}
 
     # Calculamos primero todas las estadísticas estándar
     # (Ataque, Defensa, Ataque Especial, Defensa Especial, Velocidad)
-    for clave in _CLAVES_STATS:
+    for clave in CLAVES_STATS:
         if clave == "vida":
             stats["vida"] = (((2 * base["vida"] + ivs["vida"] + (evs["vida"] // 4)) * nivel) // 100) + nivel + 10
         else:

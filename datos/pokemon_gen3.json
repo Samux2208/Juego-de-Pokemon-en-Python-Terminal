@@ -6,6 +6,12 @@
       "planta",
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Espesura",
+        "descripcion": "Potencia los ataques de tipo Planta en un apuro."
+      }
+    ],
     "stats_base": {
       "vida": 45,
       "ataque": 49,
@@ -84,6 +90,12 @@
     "tipos": [
       "planta",
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Espesura",
+        "descripcion": "Potencia los ataques de tipo Planta en un apuro."
+      }
     ],
     "stats_base": {
       "vida": 60,
@@ -164,6 +176,12 @@
       "planta",
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Espesura",
+        "descripcion": "Potencia los ataques de tipo Planta en un apuro."
+      }
+    ],
     "stats_base": {
       "vida": 80,
       "ataque": 82,
@@ -242,6 +260,12 @@
     "tipos": [
       "fuego"
     ],
+    "habilidades": [
+      {
+        "nombre": "Mar Llamas",
+        "descripcion": "Potencia los ataques de tipo Fuego en un apuro."
+      }
+    ],
     "stats_base": {
       "vida": 39,
       "ataque": 52,
@@ -314,6 +338,12 @@
     "nombre": "Charmeleon",
     "tipos": [
       "fuego"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Mar Llamas",
+        "descripcion": "Potencia los ataques de tipo Fuego en un apuro."
+      }
     ],
     "stats_base": {
       "vida": 58,
@@ -388,6 +418,12 @@
     "tipos": [
       "fuego",
       "volador"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Mar Llamas",
+        "descripcion": "Potencia los ataques de tipo Fuego en un apuro."
+      }
     ],
     "stats_base": {
       "vida": 78,
@@ -472,6 +508,12 @@
     "tipos": [
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Torrente",
+        "descripcion": "Potencia los ataques de tipo Agua en un apuro."
+      }
+    ],
     "stats_base": {
       "vida": 44,
       "ataque": 48,
@@ -549,6 +591,12 @@
     "nombre": "Wartortle",
     "tipos": [
       "agua"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Torrente",
+        "descripcion": "Potencia los ataques de tipo Agua en un apuro."
+      }
     ],
     "stats_base": {
       "vida": 59,
@@ -628,6 +676,12 @@
     "tipos": [
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Torrente",
+        "descripcion": "Potencia los ataques de tipo Agua en un apuro."
+      }
+    ],
     "stats_base": {
       "vida": 79,
       "ataque": 83,
@@ -706,6 +760,12 @@
     "tipos": [
       "bicho"
     ],
+    "habilidades": [
+      {
+        "nombre": "Polvo Escudo",
+        "descripcion": "Anula el efecto secundario del ataque sufrido."
+      }
+    ],
     "stats_base": {
       "vida": 45,
       "ataque": 30,
@@ -739,6 +799,12 @@
     "tipos": [
       "bicho"
     ],
+    "habilidades": [
+      {
+        "nombre": "Mudar",
+        "descripcion": "Cura los problemas de estado mudando la piel."
+      }
+    ],
     "stats_base": {
       "vida": 50,
       "ataque": 20,
@@ -767,6 +833,12 @@
     "tipos": [
       "bicho",
       "volador"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Ojo Compuesto",
+        "descripcion": "Aumenta la Precisión del Pokémon."
+      }
     ],
     "stats_base": {
       "vida": 60,
@@ -842,6 +914,12 @@
       "bicho",
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Polvo Escudo",
+        "descripcion": "Anula el efecto secundario del ataque sufrido."
+      }
+    ],
     "stats_base": {
       "vida": 40,
       "ataque": 35,
@@ -876,6 +954,12 @@
       "bicho",
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Mudar",
+        "descripcion": "Cura los problemas de estado mudando la piel."
+      }
+    ],
     "stats_base": {
       "vida": 45,
       "ataque": 25,
@@ -904,6 +988,12 @@
     "tipos": [
       "bicho",
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Enjambre",
+        "descripcion": "Potencia los ataques de tipo Bicho en un apuro."
+      }
     ],
     "stats_base": {
       "vida": 65,
@@ -968,6 +1058,12 @@
     "tipos": [
       "normal",
       "volador"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Vista Lince",
+        "descripcion": "Evita que disminuya la Precisión."
+      }
     ],
     "stats_base": {
       "vida": 40,
@@ -1038,6 +1134,12 @@
       "normal",
       "volador"
     ],
+    "habilidades": [
+      {
+        "nombre": "Vista Lince",
+        "descripcion": "Evita que disminuya la Precisión."
+      }
+    ],
     "stats_base": {
       "vida": 63,
       "ataque": 60,
@@ -1107,6 +1209,12 @@
       "normal",
       "volador"
     ],
+    "habilidades": [
+      {
+        "nombre": "Vista Lince",
+        "descripcion": "Evita que disminuya la Precisión."
+      }
+    ],
     "stats_base": {
       "vida": 83,
       "ataque": 80,
@@ -1175,6 +1283,16 @@
     "tipos": [
       "normal"
     ],
+    "habilidades": [
+      {
+        "nombre": "Fuga",
+        "descripcion": "Permite escapar de todos los Pokémon salvajes."
+      },
+      {
+        "nombre": "Agallas",
+        "descripcion": "Sube el Ataque si sufre un problema de estado."
+      }
+    ],
     "stats_base": {
       "vida": 30,
       "ataque": 56,
@@ -1237,6 +1355,16 @@
     "nombre": "Raticate",
     "tipos": [
       "normal"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Fuga",
+        "descripcion": "Permite escapar de todos los Pokémon salvajes."
+      },
+      {
+        "nombre": "Agallas",
+        "descripcion": "Sube el Ataque si sufre un problema de estado."
+      }
     ],
     "stats_base": {
       "vida": 55,
@@ -1301,6 +1429,12 @@
     "tipos": [
       "normal",
       "volador"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Vista Lince",
+        "descripcion": "Evita que disminuya la Precisión."
+      }
     ],
     "stats_base": {
       "vida": 40,
@@ -1371,6 +1505,12 @@
       "normal",
       "volador"
     ],
+    "habilidades": [
+      {
+        "nombre": "Vista Lince",
+        "descripcion": "Evita que disminuya la Precisión."
+      }
+    ],
     "stats_base": {
       "vida": 65,
       "ataque": 90,
@@ -1433,6 +1573,16 @@
     "nombre": "Ekans",
     "tipos": [
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Intimidación",
+        "descripcion": "Baja el Ataque del rival."
+      },
+      {
+        "nombre": "Mudar",
+        "descripcion": "Cura los problemas de estado mudando la piel."
+      }
     ],
     "stats_base": {
       "vida": 35,
@@ -1512,6 +1662,16 @@
     "tipos": [
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Intimidación",
+        "descripcion": "Baja el Ataque del rival."
+      },
+      {
+        "nombre": "Mudar",
+        "descripcion": "Cura los problemas de estado mudando la piel."
+      }
+    ],
     "stats_base": {
       "vida": 60,
       "ataque": 95,
@@ -1589,6 +1749,12 @@
     "nombre": "Pikachu",
     "tipos": [
       "electrico"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Electricidad Estática",
+        "descripcion": "Puede paralizar al mínimo contacto."
+      }
     ],
     "stats_base": {
       "vida": 35,
@@ -1668,6 +1834,12 @@
     "tipos": [
       "electrico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Electricidad Estática",
+        "descripcion": "Puede paralizar al mínimo contacto."
+      }
+    ],
     "stats_base": {
       "vida": 60,
       "ataque": 90,
@@ -1710,6 +1882,12 @@
     "nombre": "Sandshrew",
     "tipos": [
       "tierra"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Velo Arena",
+        "descripcion": "Aumenta la Evasión en las tormentas de arena."
+      }
     ],
     "stats_base": {
       "vida": 50,
@@ -1779,6 +1957,12 @@
     "tipos": [
       "tierra"
     ],
+    "habilidades": [
+      {
+        "nombre": "Velo Arena",
+        "descripcion": "Aumenta la Evasión en las tormentas de arena."
+      }
+    ],
     "stats_base": {
       "vida": 75,
       "ataque": 100,
@@ -1846,6 +2030,12 @@
     "nombre": "Nidoran♀",
     "tipos": [
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Punto Tóxico",
+        "descripcion": "Puede envenenar al mínimo contacto."
+      }
     ],
     "stats_base": {
       "vida": 55,
@@ -1919,6 +2109,12 @@
     "nombre": "Nidorina",
     "tipos": [
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Punto Tóxico",
+        "descripcion": "Puede envenenar al mínimo contacto."
+      }
     ],
     "stats_base": {
       "vida": 70,
@@ -1994,6 +2190,12 @@
       "veneno",
       "tierra"
     ],
+    "habilidades": [
+      {
+        "nombre": "Punto Tóxico",
+        "descripcion": "Puede envenenar al mínimo contacto."
+      }
+    ],
     "stats_base": {
       "vida": 90,
       "ataque": 92,
@@ -2046,6 +2248,12 @@
     "nombre": "Nidoran♂",
     "tipos": [
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Punto Tóxico",
+        "descripcion": "Puede envenenar al mínimo contacto."
+      }
     ],
     "stats_base": {
       "vida": 46,
@@ -2119,6 +2327,12 @@
     "nombre": "Nidorino",
     "tipos": [
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Punto Tóxico",
+        "descripcion": "Puede envenenar al mínimo contacto."
+      }
     ],
     "stats_base": {
       "vida": 61,
@@ -2194,6 +2408,12 @@
       "veneno",
       "tierra"
     ],
+    "habilidades": [
+      {
+        "nombre": "Punto Tóxico",
+        "descripcion": "Puede envenenar al mínimo contacto."
+      }
+    ],
     "stats_base": {
       "vida": 81,
       "ataque": 102,
@@ -2246,6 +2466,12 @@
     "nombre": "Clefairy",
     "tipos": [
       "normal"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Gran Encanto",
+        "descripcion": "Tocar al Pokémon puede causar enamoramiento."
+      }
     ],
     "stats_base": {
       "vida": 70,
@@ -2335,6 +2561,12 @@
     "tipos": [
       "normal"
     ],
+    "habilidades": [
+      {
+        "nombre": "Gran Encanto",
+        "descripcion": "Tocar al Pokémon puede causar enamoramiento."
+      }
+    ],
     "stats_base": {
       "vida": 95,
       "ataque": 70,
@@ -2377,6 +2609,12 @@
     "nombre": "Vulpix",
     "tipos": [
       "fuego"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Absorbe Fuego",
+        "descripcion": "Potencia movimientos de tipo Fuego si ha sufrido antes alguno."
+      }
     ],
     "stats_base": {
       "vida": 38,
@@ -2456,6 +2694,12 @@
     "tipos": [
       "fuego"
     ],
+    "habilidades": [
+      {
+        "nombre": "Absorbe Fuego",
+        "descripcion": "Potencia movimientos de tipo Fuego si ha sufrido antes alguno."
+      }
+    ],
     "stats_base": {
       "vida": 73,
       "ataque": 76,
@@ -2503,6 +2747,12 @@
     "nombre": "Jigglypuff",
     "tipos": [
       "normal"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Gran Encanto",
+        "descripcion": "Tocar al Pokémon puede causar enamoramiento."
+      }
     ],
     "stats_base": {
       "vida": 115,
@@ -2582,6 +2832,12 @@
     "tipos": [
       "normal"
     ],
+    "habilidades": [
+      {
+        "nombre": "Gran Encanto",
+        "descripcion": "Tocar al Pokémon puede causar enamoramiento."
+      }
+    ],
     "stats_base": {
       "vida": 140,
       "ataque": 70,
@@ -2625,6 +2881,12 @@
     "tipos": [
       "veneno",
       "volador"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Fuerza Mental",
+        "descripcion": "Evita el retroceso."
+      }
     ],
     "stats_base": {
       "vida": 40,
@@ -2699,6 +2961,12 @@
     "tipos": [
       "veneno",
       "volador"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Fuerza Mental",
+        "descripcion": "Evita el retroceso."
+      }
     ],
     "stats_base": {
       "vida": 75,
@@ -2779,6 +3047,12 @@
       "planta",
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Clorofila",
+        "descripcion": "Sube la Velocidad cuando hay sol."
+      }
+    ],
     "stats_base": {
       "vida": 45,
       "ataque": 50,
@@ -2842,6 +3116,12 @@
     "tipos": [
       "planta",
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Clorofila",
+        "descripcion": "Sube la Velocidad cuando hay sol."
+      }
     ],
     "stats_base": {
       "vida": 60,
@@ -2907,6 +3187,12 @@
       "planta",
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Clorofila",
+        "descripcion": "Sube la Velocidad cuando hay sol."
+      }
+    ],
     "stats_base": {
       "vida": 75,
       "ataque": 80,
@@ -2955,6 +3241,12 @@
     "tipos": [
       "bicho",
       "planta"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Efecto Espora",
+        "descripcion": "Puede dormir, envenenar o paralizar al contacto."
+      }
     ],
     "stats_base": {
       "vida": 35,
@@ -3025,6 +3317,12 @@
       "bicho",
       "planta"
     ],
+    "habilidades": [
+      {
+        "nombre": "Efecto Espora",
+        "descripcion": "Puede dormir, envenenar o paralizar al contacto."
+      }
+    ],
     "stats_base": {
       "vida": 60,
       "ataque": 95,
@@ -3093,6 +3391,12 @@
     "tipos": [
       "bicho",
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Ojo Compuesto",
+        "descripcion": "Aumenta la Precisión del Pokémon."
+      }
     ],
     "stats_base": {
       "vida": 60,
@@ -3172,6 +3476,12 @@
     "tipos": [
       "bicho",
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Polvo Escudo",
+        "descripcion": "Anula el efecto secundario del ataque sufrido."
+      }
     ],
     "stats_base": {
       "vida": 70,
@@ -3261,6 +3571,16 @@
     "tipos": [
       "tierra"
     ],
+    "habilidades": [
+      {
+        "nombre": "Velo Arena",
+        "descripcion": "Aumenta la Evasión en las tormentas de arena."
+      },
+      {
+        "nombre": "Trampa Arena",
+        "descripcion": "Evita que el rival huya."
+      }
+    ],
     "stats_base": {
       "vida": 10,
       "ataque": 55,
@@ -3333,6 +3653,16 @@
     "nombre": "Dugtrio",
     "tipos": [
       "tierra"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Velo Arena",
+        "descripcion": "Aumenta la Evasión en las tormentas de arena."
+      },
+      {
+        "nombre": "Trampa Arena",
+        "descripcion": "Evita que el rival huya."
+      }
     ],
     "stats_base": {
       "vida": 35,
@@ -3417,6 +3747,12 @@
     "tipos": [
       "normal"
     ],
+    "habilidades": [
+      {
+        "nombre": "Recogida",
+        "descripcion": "El Pokémon puede encontrar objetos."
+      }
+    ],
     "stats_base": {
       "vida": 40,
       "ataque": 45,
@@ -3489,6 +3825,12 @@
     "nombre": "Persian",
     "tipos": [
       "normal"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Flexibilidad",
+        "descripcion": "Evita ser paralizado."
+      }
     ],
     "stats_base": {
       "vida": 65,
@@ -3563,6 +3905,16 @@
     "tipos": [
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Humedad",
+        "descripcion": "Evita que un Pokémon pueda autodestruirse."
+      },
+      {
+        "nombre": "Aclimatación",
+        "descripcion": "Anula los efectos del tiempo atmosférico."
+      }
+    ],
     "stats_base": {
       "vida": 50,
       "ataque": 52,
@@ -3631,6 +3983,16 @@
     "tipos": [
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Humedad",
+        "descripcion": "Evita que un Pokémon pueda autodestruirse."
+      },
+      {
+        "nombre": "Aclimatación",
+        "descripcion": "Anula los efectos del tiempo atmosférico."
+      }
+    ],
     "stats_base": {
       "vida": 80,
       "ataque": 82,
@@ -3698,6 +4060,12 @@
     "nombre": "Mankey",
     "tipos": [
       "lucha"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Espíritu Vital",
+        "descripcion": "Evita el quedarse dormido."
+      }
     ],
     "stats_base": {
       "vida": 40,
@@ -3776,6 +4144,12 @@
     "nombre": "Primeape",
     "tipos": [
       "lucha"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Espíritu Vital",
+        "descripcion": "Evita el quedarse dormido."
+      }
     ],
     "stats_base": {
       "vida": 65,
@@ -3860,6 +4234,16 @@
     "tipos": [
       "fuego"
     ],
+    "habilidades": [
+      {
+        "nombre": "Intimidación",
+        "descripcion": "Baja el Ataque del rival."
+      },
+      {
+        "nombre": "Absorbe Fuego",
+        "descripcion": "Potencia movimientos de tipo Fuego si ha sufrido antes alguno."
+      }
+    ],
     "stats_base": {
       "vida": 55,
       "ataque": 70,
@@ -3933,6 +4317,16 @@
     "tipos": [
       "fuego"
     ],
+    "habilidades": [
+      {
+        "nombre": "Intimidación",
+        "descripcion": "Baja el Ataque del rival."
+      },
+      {
+        "nombre": "Absorbe Fuego",
+        "descripcion": "Potencia movimientos de tipo Fuego si ha sufrido antes alguno."
+      }
+    ],
     "stats_base": {
       "vida": 90,
       "ataque": 110,
@@ -3980,6 +4374,16 @@
     "nombre": "Poliwag",
     "tipos": [
       "agua"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Absorbe Agua",
+        "descripcion": "Recupera PS al recibir ataques de tipo Agua."
+      },
+      {
+        "nombre": "Humedad",
+        "descripcion": "Evita que un Pokémon pueda autodestruirse."
+      }
     ],
     "stats_base": {
       "vida": 40,
@@ -4043,6 +4447,16 @@
     "nombre": "Poliwhirl",
     "tipos": [
       "agua"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Absorbe Agua",
+        "descripcion": "Recupera PS al recibir ataques de tipo Agua."
+      },
+      {
+        "nombre": "Humedad",
+        "descripcion": "Evita que un Pokémon pueda autodestruirse."
+      }
     ],
     "stats_base": {
       "vida": 65,
@@ -4108,6 +4522,16 @@
       "agua",
       "lucha"
     ],
+    "habilidades": [
+      {
+        "nombre": "Absorbe Agua",
+        "descripcion": "Recupera PS al recibir ataques de tipo Agua."
+      },
+      {
+        "nombre": "Humedad",
+        "descripcion": "Evita que un Pokémon pueda autodestruirse."
+      }
+    ],
     "stats_base": {
       "vida": 90,
       "ataque": 95,
@@ -4156,6 +4580,16 @@
     "tipos": [
       "psiquico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Sincronía",
+        "descripcion": "Contagia envenenamiento, parálisis o quemaduras."
+      },
+      {
+        "nombre": "Fuerza Mental",
+        "descripcion": "Evita el retroceso."
+      }
+    ],
     "stats_base": {
       "vida": 25,
       "ataque": 20,
@@ -4183,6 +4617,16 @@
     "nombre": "Kadabra",
     "tipos": [
       "psiquico"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Sincronía",
+        "descripcion": "Contagia envenenamiento, parálisis o quemaduras."
+      },
+      {
+        "nombre": "Fuerza Mental",
+        "descripcion": "Evita el retroceso."
+      }
     ],
     "stats_base": {
       "vida": 40,
@@ -4262,6 +4706,16 @@
     "tipos": [
       "psiquico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Sincronía",
+        "descripcion": "Contagia envenenamiento, parálisis o quemaduras."
+      },
+      {
+        "nombre": "Fuerza Mental",
+        "descripcion": "Evita el retroceso."
+      }
+    ],
     "stats_base": {
       "vida": 55,
       "ataque": 50,
@@ -4339,6 +4793,12 @@
     "nombre": "Machop",
     "tipos": [
       "lucha"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Agallas",
+        "descripcion": "Sube el Ataque si sufre un problema de estado."
+      }
     ],
     "stats_base": {
       "vida": 70,
@@ -4423,6 +4883,12 @@
     "tipos": [
       "lucha"
     ],
+    "habilidades": [
+      {
+        "nombre": "Agallas",
+        "descripcion": "Sube el Ataque si sufre un problema de estado."
+      }
+    ],
     "stats_base": {
       "vida": 80,
       "ataque": 100,
@@ -4505,6 +4971,12 @@
     "nombre": "Machamp",
     "tipos": [
       "lucha"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Agallas",
+        "descripcion": "Sube el Ataque si sufre un problema de estado."
+      }
     ],
     "stats_base": {
       "vida": 90,
@@ -4590,6 +5062,12 @@
       "planta",
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Clorofila",
+        "descripcion": "Sube la Velocidad cuando hay sol."
+      }
+    ],
     "stats_base": {
       "vida": 50,
       "ataque": 75,
@@ -4663,6 +5141,12 @@
     "tipos": [
       "planta",
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Clorofila",
+        "descripcion": "Sube la Velocidad cuando hay sol."
+      }
     ],
     "stats_base": {
       "vida": 65,
@@ -4738,6 +5222,12 @@
       "planta",
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Clorofila",
+        "descripcion": "Sube la Velocidad cuando hay sol."
+      }
+    ],
     "stats_base": {
       "vida": 80,
       "ataque": 105,
@@ -4796,6 +5286,16 @@
     "tipos": [
       "agua",
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Cuerpo Puro",
+        "descripcion": "Evita que bajen las características."
+      },
+      {
+        "nombre": "Lodo Líquido",
+        "descripcion": "Hiere a los Pokémon que drenan PS."
+      }
     ],
     "stats_base": {
       "vida": 40,
@@ -4866,6 +5366,16 @@
       "agua",
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Cuerpo Puro",
+        "descripcion": "Evita que bajen las características."
+      },
+      {
+        "nombre": "Lodo Líquido",
+        "descripcion": "Hiere a los Pokémon que drenan PS."
+      }
+    ],
     "stats_base": {
       "vida": 80,
       "ataque": 70,
@@ -4934,6 +5444,16 @@
     "tipos": [
       "roca",
       "tierra"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Cabeza Roca",
+        "descripcion": "Impide que el Pokémon se dañe con sus movimientos."
+      },
+      {
+        "nombre": "Robustez",
+        "descripcion": "Evita que el rival pueda debilitarle de un solo golpe."
+      }
     ],
     "stats_base": {
       "vida": 40,
@@ -5014,6 +5534,16 @@
       "roca",
       "tierra"
     ],
+    "habilidades": [
+      {
+        "nombre": "Cabeza Roca",
+        "descripcion": "Impide que el Pokémon se dañe con sus movimientos."
+      },
+      {
+        "nombre": "Robustez",
+        "descripcion": "Evita que el rival pueda debilitarle de un solo golpe."
+      }
+    ],
     "stats_base": {
       "vida": 55,
       "ataque": 95,
@@ -5093,6 +5623,16 @@
       "roca",
       "tierra"
     ],
+    "habilidades": [
+      {
+        "nombre": "Cabeza Roca",
+        "descripcion": "Impide que el Pokémon se dañe con sus movimientos."
+      },
+      {
+        "nombre": "Robustez",
+        "descripcion": "Evita que el rival pueda debilitarle de un solo golpe."
+      }
+    ],
     "stats_base": {
       "vida": 80,
       "ataque": 120,
@@ -5171,6 +5711,16 @@
     "tipos": [
       "fuego"
     ],
+    "habilidades": [
+      {
+        "nombre": "Fuga",
+        "descripcion": "Permite escapar de todos los Pokémon salvajes."
+      },
+      {
+        "nombre": "Absorbe Fuego",
+        "descripcion": "Potencia movimientos de tipo Fuego si ha sufrido antes alguno."
+      }
+    ],
     "stats_base": {
       "vida": 50,
       "ataque": 85,
@@ -5243,6 +5793,16 @@
     "nombre": "Rapidash",
     "tipos": [
       "fuego"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Fuga",
+        "descripcion": "Permite escapar de todos los Pokémon salvajes."
+      },
+      {
+        "nombre": "Absorbe Fuego",
+        "descripcion": "Potencia movimientos de tipo Fuego si ha sufrido antes alguno."
+      }
     ],
     "stats_base": {
       "vida": 65,
@@ -5323,6 +5883,16 @@
       "agua",
       "psiquico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Despiste",
+        "descripcion": "Evita que el Pokémon sea atraído o provocado."
+      },
+      {
+        "nombre": "Ritmo Propio",
+        "descripcion": "Evita ser confundido."
+      }
+    ],
     "stats_base": {
       "vida": 90,
       "ataque": 65,
@@ -5396,6 +5966,16 @@
     "tipos": [
       "agua",
       "psiquico"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Despiste",
+        "descripcion": "Evita que el Pokémon sea atraído o provocado."
+      },
+      {
+        "nombre": "Ritmo Propio",
+        "descripcion": "Evita ser confundido."
+      }
     ],
     "stats_base": {
       "vida": 95,
@@ -5476,6 +6056,16 @@
       "electrico",
       "acero"
     ],
+    "habilidades": [
+      {
+        "nombre": "Imán",
+        "descripcion": "Impide huir a los Pokémon de tipo Acero."
+      },
+      {
+        "nombre": "Robustez",
+        "descripcion": "Evita que el rival pueda debilitarle de un solo golpe."
+      }
+    ],
     "stats_base": {
       "vida": 25,
       "ataque": 35,
@@ -5554,6 +6144,16 @@
     "tipos": [
       "electrico",
       "acero"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Imán",
+        "descripcion": "Impide huir a los Pokémon de tipo Acero."
+      },
+      {
+        "nombre": "Robustez",
+        "descripcion": "Evita que el rival pueda debilitarle de un solo golpe."
+      }
     ],
     "stats_base": {
       "vida": 50,
@@ -5634,6 +6234,16 @@
       "normal",
       "volador"
     ],
+    "habilidades": [
+      {
+        "nombre": "Vista Lince",
+        "descripcion": "Evita que disminuya la Precisión."
+      },
+      {
+        "nombre": "Fuerza Mental",
+        "descripcion": "Evita el retroceso."
+      }
+    ],
     "stats_base": {
       "vida": 52,
       "ataque": 90,
@@ -5708,6 +6318,16 @@
       "normal",
       "volador"
     ],
+    "habilidades": [
+      {
+        "nombre": "Fuga",
+        "descripcion": "Permite escapar de todos los Pokémon salvajes."
+      },
+      {
+        "nombre": "Madrugar",
+        "descripcion": "El Pokémon se despierta rápidamente."
+      }
+    ],
     "stats_base": {
       "vida": 35,
       "ataque": 85,
@@ -5777,6 +6397,16 @@
       "normal",
       "volador"
     ],
+    "habilidades": [
+      {
+        "nombre": "Fuga",
+        "descripcion": "Permite escapar de todos los Pokémon salvajes."
+      },
+      {
+        "nombre": "Madrugar",
+        "descripcion": "El Pokémon se despierta rápidamente."
+      }
+    ],
     "stats_base": {
       "vida": 60,
       "ataque": 110,
@@ -5845,6 +6475,12 @@
     "tipos": [
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Sebo",
+        "descripcion": "Atenúa los ataques de tipo Fuego y Hielo."
+      }
+    ],
     "stats_base": {
       "vida": 65,
       "ataque": 45,
@@ -5908,6 +6544,12 @@
     "tipos": [
       "agua",
       "hielo"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Sebo",
+        "descripcion": "Atenúa los ataques de tipo Fuego y Hielo."
+      }
     ],
     "stats_base": {
       "vida": 90,
@@ -5982,6 +6624,16 @@
     "tipos": [
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Hedor",
+        "descripcion": "Es posible que el rival retroceda por el mal olor."
+      },
+      {
+        "nombre": "Viscosidad",
+        "descripcion": "Protege al Pokémon del robo de objetos."
+      }
+    ],
     "stats_base": {
       "vida": 80,
       "ataque": 80,
@@ -6054,6 +6706,16 @@
     "nombre": "Muk",
     "tipos": [
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Hedor",
+        "descripcion": "Es posible que el rival retroceda por el mal olor."
+      },
+      {
+        "nombre": "Viscosidad",
+        "descripcion": "Protege al Pokémon del robo de objetos."
+      }
     ],
     "stats_base": {
       "vida": 105,
@@ -6128,6 +6790,12 @@
     "tipos": [
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Caparazón",
+        "descripcion": "Bloquea los golpes críticos."
+      }
+    ],
     "stats_base": {
       "vida": 30,
       "ataque": 65,
@@ -6197,6 +6865,12 @@
       "agua",
       "hielo"
     ],
+    "habilidades": [
+      {
+        "nombre": "Caparazón",
+        "descripcion": "Bloquea los golpes críticos."
+      }
+    ],
     "stats_base": {
       "vida": 50,
       "ataque": 95,
@@ -6250,6 +6924,12 @@
     "tipos": [
       "fantasma",
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Levitación",
+        "descripcion": "Proporciona inmunidad frente a los ataques de tipo Tierra."
+      }
     ],
     "stats_base": {
       "vida": 30,
@@ -6324,6 +7004,12 @@
     "tipos": [
       "fantasma",
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Levitación",
+        "descripcion": "Proporciona inmunidad frente a los ataques de tipo Tierra."
+      }
     ],
     "stats_base": {
       "vida": 45,
@@ -6404,6 +7090,12 @@
       "fantasma",
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Levitación",
+        "descripcion": "Proporciona inmunidad frente a los ataques de tipo Tierra."
+      }
+    ],
     "stats_base": {
       "vida": 60,
       "ataque": 65,
@@ -6482,6 +7174,16 @@
     "tipos": [
       "roca",
       "tierra"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Cabeza Roca",
+        "descripcion": "Impide que el Pokémon se dañe con sus movimientos."
+      },
+      {
+        "nombre": "Robustez",
+        "descripcion": "Evita que el rival pueda debilitarle de un solo golpe."
+      }
     ],
     "stats_base": {
       "vida": 35,
@@ -6566,6 +7268,12 @@
     "tipos": [
       "psiquico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Insomnio",
+        "descripcion": "Evita el quedarse dormido."
+      }
+    ],
     "stats_base": {
       "vida": 60,
       "ataque": 48,
@@ -6643,6 +7351,12 @@
     "nombre": "Hypno",
     "tipos": [
       "psiquico"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Insomnio",
+        "descripcion": "Evita el quedarse dormido."
+      }
     ],
     "stats_base": {
       "vida": 85,
@@ -6727,6 +7441,16 @@
     "tipos": [
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Corte Fuerte",
+        "descripcion": "Evita que disminuya el Ataque."
+      },
+      {
+        "nombre": "Caparazón",
+        "descripcion": "Bloquea los golpes críticos."
+      }
+    ],
     "stats_base": {
       "vida": 30,
       "ataque": 105,
@@ -6799,6 +7523,16 @@
     "nombre": "Kingler",
     "tipos": [
       "agua"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Corte Fuerte",
+        "descripcion": "Evita que disminuya el Ataque."
+      },
+      {
+        "nombre": "Caparazón",
+        "descripcion": "Bloquea los golpes críticos."
+      }
     ],
     "stats_base": {
       "vida": 55,
@@ -6878,6 +7612,16 @@
     "tipos": [
       "electrico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Insonorizar",
+        "descripcion": "Evita ataques de sonido."
+      },
+      {
+        "nombre": "Electricidad Estática",
+        "descripcion": "Puede paralizar al mínimo contacto."
+      }
+    ],
     "stats_base": {
       "vida": 40,
       "ataque": 30,
@@ -6955,6 +7699,16 @@
     "nombre": "Electrode",
     "tipos": [
       "electrico"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Insonorizar",
+        "descripcion": "Evita ataques de sonido."
+      },
+      {
+        "nombre": "Electricidad Estática",
+        "descripcion": "Puede paralizar al mínimo contacto."
+      }
     ],
     "stats_base": {
       "vida": 60,
@@ -7035,6 +7789,12 @@
       "planta",
       "psiquico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Clorofila",
+        "descripcion": "Sube la Velocidad cuando hay sol."
+      }
+    ],
     "stats_base": {
       "vida": 60,
       "ataque": 40,
@@ -7109,6 +7869,12 @@
       "planta",
       "psiquico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Clorofila",
+        "descripcion": "Sube la Velocidad cuando hay sol."
+      }
+    ],
     "stats_base": {
       "vida": 95,
       "ataque": 95,
@@ -7156,6 +7922,16 @@
     "nombre": "Cubone",
     "tipos": [
       "tierra"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Cabeza Roca",
+        "descripcion": "Impide que el Pokémon se dañe con sus movimientos."
+      },
+      {
+        "nombre": "Pararrayos",
+        "descripcion": "Atrae y neutraliza movimientos de tipo Eléctrico y sube el At. Esp."
+      }
     ],
     "stats_base": {
       "vida": 50,
@@ -7240,6 +8016,16 @@
     "tipos": [
       "tierra"
     ],
+    "habilidades": [
+      {
+        "nombre": "Cabeza Roca",
+        "descripcion": "Impide que el Pokémon se dañe con sus movimientos."
+      },
+      {
+        "nombre": "Pararrayos",
+        "descripcion": "Atrae y neutraliza movimientos de tipo Eléctrico y sube el At. Esp."
+      }
+    ],
     "stats_base": {
       "vida": 60,
       "ataque": 80,
@@ -7322,6 +8108,12 @@
     "nombre": "Hitmonlee",
     "tipos": [
       "lucha"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Flexibilidad",
+        "descripcion": "Evita ser paralizado."
+      }
     ],
     "stats_base": {
       "vida": 50,
@@ -7411,6 +8203,12 @@
     "tipos": [
       "lucha"
     ],
+    "habilidades": [
+      {
+        "nombre": "Vista Lince",
+        "descripcion": "Evita que disminuya la Precisión."
+      }
+    ],
     "stats_base": {
       "vida": 50,
       "ataque": 105,
@@ -7494,6 +8292,16 @@
     "tipos": [
       "normal"
     ],
+    "habilidades": [
+      {
+        "nombre": "Ritmo Propio",
+        "descripcion": "Evita ser confundido."
+      },
+      {
+        "nombre": "Despiste",
+        "descripcion": "Evita que el Pokémon sea atraído o provocado."
+      }
+    ],
     "stats_base": {
       "vida": 90,
       "ataque": 55,
@@ -7567,6 +8375,12 @@
     "tipos": [
       "veneno"
     ],
+    "habilidades": [
+      {
+        "nombre": "Levitación",
+        "descripcion": "Proporciona inmunidad frente a los ataques de tipo Tierra."
+      }
+    ],
     "stats_base": {
       "vida": 40,
       "ataque": 65,
@@ -7639,6 +8453,12 @@
     "nombre": "Weezing",
     "tipos": [
       "veneno"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Levitación",
+        "descripcion": "Proporciona inmunidad frente a los ataques de tipo Tierra."
+      }
     ],
     "stats_base": {
       "vida": 65,
@@ -7714,6 +8534,16 @@
       "tierra",
       "roca"
     ],
+    "habilidades": [
+      {
+        "nombre": "Pararrayos",
+        "descripcion": "Atrae y neutraliza movimientos de tipo Eléctrico y sube el At. Esp."
+      },
+      {
+        "nombre": "Cabeza Roca",
+        "descripcion": "Impide que el Pokémon se dañe con sus movimientos."
+      }
+    ],
     "stats_base": {
       "vida": 80,
       "ataque": 85,
@@ -7788,6 +8618,16 @@
       "tierra",
       "roca"
     ],
+    "habilidades": [
+      {
+        "nombre": "Pararrayos",
+        "descripcion": "Atrae y neutraliza movimientos de tipo Eléctrico y sube el At. Esp."
+      },
+      {
+        "nombre": "Cabeza Roca",
+        "descripcion": "Impide que el Pokémon se dañe con sus movimientos."
+      }
+    ],
     "stats_base": {
       "vida": 105,
       "ataque": 130,
@@ -7860,6 +8700,16 @@
     "nombre": "Chansey",
     "tipos": [
       "normal"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Cura Natural",
+        "descripcion": "Cura problemas de estado al cambiar de Pokémon."
+      },
+      {
+        "nombre": "Dicha",
+        "descripcion": "Aumenta la probabilidad de que haya efectos secundarios."
+      }
     ],
     "stats_base": {
       "vida": 250,
@@ -7944,6 +8794,12 @@
     "tipos": [
       "planta"
     ],
+    "habilidades": [
+      {
+        "nombre": "Clorofila",
+        "descripcion": "Sube la Velocidad cuando hay sol."
+      }
+    ],
     "stats_base": {
       "vida": 65,
       "ataque": 55,
@@ -8027,6 +8883,12 @@
     "tipos": [
       "normal"
     ],
+    "habilidades": [
+      {
+        "nombre": "Madrugar",
+        "descripcion": "El Pokémon se despierta rápidamente."
+      }
+    ],
     "stats_base": {
       "vida": 105,
       "ataque": 95,
@@ -8100,6 +8962,12 @@
     "tipos": [
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Nado Rápido",
+        "descripcion": "Sube la Velocidad cuando hay lluvia."
+      }
+    ],
     "stats_base": {
       "vida": 30,
       "ataque": 40,
@@ -8163,6 +9031,12 @@
     "tipos": [
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Punto Tóxico",
+        "descripcion": "Puede envenenar al mínimo contacto."
+      }
+    ],
     "stats_base": {
       "vida": 55,
       "ataque": 65,
@@ -8225,6 +9099,16 @@
     "nombre": "Goldeen",
     "tipos": [
       "agua"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Nado Rápido",
+        "descripcion": "Sube la Velocidad cuando hay lluvia."
+      },
+      {
+        "nombre": "Velo Agua",
+        "descripcion": "Evita las quemaduras."
+      }
     ],
     "stats_base": {
       "vida": 45,
@@ -8304,6 +9188,16 @@
     "tipos": [
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Nado Rápido",
+        "descripcion": "Sube la Velocidad cuando hay lluvia."
+      },
+      {
+        "nombre": "Velo Agua",
+        "descripcion": "Evita las quemaduras."
+      }
+    ],
     "stats_base": {
       "vida": 80,
       "ataque": 92,
@@ -8381,6 +9275,16 @@
     "nombre": "Staryu",
     "tipos": [
       "agua"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Iluminación",
+        "descripcion": "Aumenta la probabilidad de encontrar Pokémon."
+      },
+      {
+        "nombre": "Cura Natural",
+        "descripcion": "Cura problemas de estado al cambiar de Pokémon."
+      }
     ],
     "stats_base": {
       "vida": 30,
@@ -8466,6 +9370,16 @@
       "agua",
       "psiquico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Iluminación",
+        "descripcion": "Aumenta la probabilidad de encontrar Pokémon."
+      },
+      {
+        "nombre": "Cura Natural",
+        "descripcion": "Cura problemas de estado al cambiar de Pokémon."
+      }
+    ],
     "stats_base": {
       "vida": 60,
       "ataque": 75,
@@ -8513,6 +9427,12 @@
     "nombre": "Mr. Mime",
     "tipos": [
       "psiquico"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Insonorizar",
+        "descripcion": "Evita ataques de sonido."
+      }
     ],
     "stats_base": {
       "vida": 40,
@@ -8618,6 +9538,12 @@
       "bicho",
       "volador"
     ],
+    "habilidades": [
+      {
+        "nombre": "Enjambre",
+        "descripcion": "Potencia los ataques de tipo Bicho en un apuro."
+      }
+    ],
     "stats_base": {
       "vida": 70,
       "ataque": 110,
@@ -8697,6 +9623,12 @@
       "hielo",
       "psiquico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Despiste",
+        "descripcion": "Evita que el Pokémon sea atraído o provocado."
+      }
+    ],
     "stats_base": {
       "vida": 65,
       "ataque": 50,
@@ -8775,6 +9707,12 @@
     "tipos": [
       "electrico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Electricidad Estática",
+        "descripcion": "Puede paralizar al mínimo contacto."
+      }
+    ],
     "stats_base": {
       "vida": 65,
       "ataque": 83,
@@ -8837,6 +9775,12 @@
     "nombre": "Magmar",
     "tipos": [
       "fuego"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Cuerpo Llama",
+        "descripcion": "Puede quemar al mínimo contacto."
+      }
     ],
     "stats_base": {
       "vida": 65,
@@ -8905,6 +9849,12 @@
     "nombre": "Pinsir",
     "tipos": [
       "bicho"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Corte Fuerte",
+        "descripcion": "Evita que disminuya el Ataque."
+      }
     ],
     "stats_base": {
       "vida": 65,
@@ -8979,6 +9929,12 @@
     "tipos": [
       "normal"
     ],
+    "habilidades": [
+      {
+        "nombre": "Intimidación",
+        "descripcion": "Baja el Ataque del rival."
+      }
+    ],
     "stats_base": {
       "vida": 75,
       "ataque": 100,
@@ -9052,6 +10008,12 @@
     "tipos": [
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Nado Rápido",
+        "descripcion": "Sube la Velocidad cuando hay lluvia."
+      }
+    ],
     "stats_base": {
       "vida": 20,
       "ataque": 10,
@@ -9090,6 +10052,12 @@
     "tipos": [
       "agua",
       "volador"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Intimidación",
+        "descripcion": "Baja el Ataque del rival."
+      }
     ],
     "stats_base": {
       "vida": 95,
@@ -9159,6 +10127,16 @@
     "tipos": [
       "agua",
       "hielo"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Absorbe Agua",
+        "descripcion": "Recupera PS al recibir ataques de tipo Agua."
+      },
+      {
+        "nombre": "Caparazón",
+        "descripcion": "Bloquea los golpes críticos."
+      }
     ],
     "stats_base": {
       "vida": 130,
@@ -9243,6 +10221,12 @@
     "tipos": [
       "normal"
     ],
+    "habilidades": [
+      {
+        "nombre": "Flexibilidad",
+        "descripcion": "Evita ser paralizado."
+      }
+    ],
     "stats_base": {
       "vida": 48,
       "ataque": 48,
@@ -9270,6 +10254,12 @@
     "nombre": "Eevee",
     "tipos": [
       "normal"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Fuga",
+        "descripcion": "Permite escapar de todos los Pokémon salvajes."
+      }
     ],
     "stats_base": {
       "vida": 55,
@@ -9338,6 +10328,12 @@
     "nombre": "Vaporeon",
     "tipos": [
       "agua"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Absorbe Agua",
+        "descripcion": "Recupera PS al recibir ataques de tipo Agua."
+      }
     ],
     "stats_base": {
       "vida": 130,
@@ -9417,6 +10413,12 @@
     "tipos": [
       "electrico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Absorbe Electricidad",
+        "descripcion": "Recupera PS al recibir ataques de tipo Eléctrico."
+      }
+    ],
     "stats_base": {
       "vida": 65,
       "ataque": 65,
@@ -9495,6 +10497,12 @@
     "tipos": [
       "fuego"
     ],
+    "habilidades": [
+      {
+        "nombre": "Absorbe Fuego",
+        "descripcion": "Potencia movimientos de tipo Fuego si ha sufrido antes alguno."
+      }
+    ],
     "stats_base": {
       "vida": 65,
       "ataque": 130,
@@ -9572,6 +10580,12 @@
     "nombre": "Porygon",
     "tipos": [
       "normal"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Calco",
+        "descripcion": "Copia la habilidad del rival."
+      }
     ],
     "stats_base": {
       "vida": 65,
@@ -9652,6 +10666,16 @@
       "roca",
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Nado Rápido",
+        "descripcion": "Sube la Velocidad cuando hay lluvia."
+      },
+      {
+        "nombre": "Caparazón",
+        "descripcion": "Bloquea los golpes críticos."
+      }
+    ],
     "stats_base": {
       "vida": 35,
       "ataque": 40,
@@ -9725,6 +10749,16 @@
     "tipos": [
       "roca",
       "agua"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Nado Rápido",
+        "descripcion": "Sube la Velocidad cuando hay lluvia."
+      },
+      {
+        "nombre": "Caparazón",
+        "descripcion": "Bloquea los golpes críticos."
+      }
     ],
     "stats_base": {
       "vida": 70,
@@ -9805,6 +10839,16 @@
       "roca",
       "agua"
     ],
+    "habilidades": [
+      {
+        "nombre": "Nado Rápido",
+        "descripcion": "Sube la Velocidad cuando hay lluvia."
+      },
+      {
+        "nombre": "Armadura Batalla",
+        "descripcion": "Bloquea golpes críticos."
+      }
+    ],
     "stats_base": {
       "vida": 30,
       "ataque": 80,
@@ -9878,6 +10922,16 @@
     "tipos": [
       "roca",
       "agua"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Nado Rápido",
+        "descripcion": "Sube la Velocidad cuando hay lluvia."
+      },
+      {
+        "nombre": "Armadura Batalla",
+        "descripcion": "Bloquea golpes críticos."
+      }
     ],
     "stats_base": {
       "vida": 60,
@@ -9963,6 +11017,16 @@
       "roca",
       "volador"
     ],
+    "habilidades": [
+      {
+        "nombre": "Cabeza Roca",
+        "descripcion": "Impide que el Pokémon se dañe con sus movimientos."
+      },
+      {
+        "nombre": "Presión",
+        "descripcion": "Hace que los PP del rival se acaben antes."
+      }
+    ],
     "stats_base": {
       "vida": 80,
       "ataque": 105,
@@ -10025,6 +11089,16 @@
     "nombre": "Snorlax",
     "tipos": [
       "normal"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Inmunidad",
+        "descripcion": "Evita el envenenamiento."
+      },
+      {
+        "nombre": "Sebo",
+        "descripcion": "Atenúa los ataques de tipo Fuego y Hielo."
+      }
     ],
     "stats_base": {
       "vida": 160,
@@ -10120,6 +11194,12 @@
       "hielo",
       "volador"
     ],
+    "habilidades": [
+      {
+        "nombre": "Presión",
+        "descripcion": "Hace que los PP del rival se acaben antes."
+      }
+    ],
     "stats_base": {
       "vida": 90,
       "ataque": 85,
@@ -10188,6 +11268,12 @@
     "tipos": [
       "electrico",
       "volador"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Presión",
+        "descripcion": "Hace que los PP del rival se acaben antes."
+      }
     ],
     "stats_base": {
       "vida": 90,
@@ -10258,6 +11344,12 @@
       "fuego",
       "volador"
     ],
+    "habilidades": [
+      {
+        "nombre": "Presión",
+        "descripcion": "Hace que los PP del rival se acaben antes."
+      }
+    ],
     "stats_base": {
       "vida": 90,
       "ataque": 100,
@@ -10325,6 +11417,12 @@
     "nombre": "Dratini",
     "tipos": [
       "dragon"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Mudar",
+        "descripcion": "Cura los problemas de estado mudando la piel."
+      }
     ],
     "stats_base": {
       "vida": 41,
@@ -10399,6 +11497,12 @@
     "tipos": [
       "dragon"
     ],
+    "habilidades": [
+      {
+        "nombre": "Mudar",
+        "descripcion": "Cura los problemas de estado mudando la piel."
+      }
+    ],
     "stats_base": {
       "vida": 61,
       "ataque": 84,
@@ -10472,6 +11576,12 @@
     "tipos": [
       "dragon",
       "volador"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Fuerza Mental",
+        "descripcion": "Evita el retroceso."
+      }
     ],
     "stats_base": {
       "vida": 91,
@@ -10551,6 +11661,12 @@
     "tipos": [
       "psiquico"
     ],
+    "habilidades": [
+      {
+        "nombre": "Presión",
+        "descripcion": "Hace que los PP del rival se acaben antes."
+      }
+    ],
     "stats_base": {
       "vida": 106,
       "ataque": 110,
@@ -10628,6 +11744,12 @@
     "nombre": "Mew",
     "tipos": [
       "psiquico"
+    ],
+    "habilidades": [
+      {
+        "nombre": "Sincronía",
+        "descripcion": "Contagia envenenamiento, parálisis o quemaduras."
+      }
     ],
     "stats_base": {
       "vida": 100,

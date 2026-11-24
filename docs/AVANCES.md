@@ -72,3 +72,27 @@ Durante el desarrollo enfrentamos varios retos técnicos que resolvimos mediante
 ### Próximos desarrollos (Entrega 2)
 * **Ensayo de demostración:** Preparar la presentación de dos minutos y las explicaciones técnicas sobre herencia, `super()`, encapsulamiento y `@property`.
 * **Expansión de mecánicas:** Continuar con los requisitos de la Entrega 2 (nuevos eventos de combate, evolución en partida y mejoras en la exploración de rutas) manteniendo intacta la arquitectura modular actual.
+
+---
+
+## ⚙️ Sprint 3 — Entrega 2 de POO I
+
+### Qué hicimos
+* Se completó la herencia multinivel `Pokemon` → `PokemonCapturable` → `PokemonSalvaje` / `PokemonAtrapado`, incluyendo carga y exportación con `super()`, el alias `PokemonJugador` y turnos polimórficos.
+* Se unificó el uso de Poké Balls, medicinas y piedras evolutivas con `Objeto.usar(contexto)`, sin ramificar por clase durante el uso de ítems.
+* Se añadió el desafío final de Brock en el Gimnasio Plateada. La victoria entrega y guarda la Medalla Roca; caer ante el líder anuncia la derrota.
+* Se agregó `python -m tests.test_entrega2` para verificar herencia, objetos, daño/recuperación, resultados del gimnasio y guardado atómico de subclases.
+
+### Quién hizo qué
+* **Samux2208 y Adrian Fernando Caicedo:** Trabajo en equipo sobre la jerarquía Pokémon, persistencia, polimorfismo de objetos, flujo del gimnasio, pruebas automatizadas y documentación.
+
+### Qué falló
+* Antes del refactor, el motor de combate y la mochila diferenciaban Poké Balls, pociones y piedras con comprobaciones de clase, por lo que añadir un nuevo objeto requería modificar los menús.
+* El flujo anterior no ofrecía una condición completa de victoria/derrota ni conservaba las medallas dentro del guardado.
+* La carga de datos debía coordinar atributos de varios niveles de herencia; la solución delega la construcción por `super()` y mantiene los datos específicos de cada subclase.
+
+### Qué sigue
+* Ejecutar la aventura completa en terminal y hacer un playtest cronometrado de menos de ocho minutos.
+* Ajustar la dificultad de Brock y los textos después del playtest, sin añadir dependencias externas.
+* Ejecutar `python -m tests.test_entrega2` y verificar el guardado/carga en el equipo de presentación.
+* Implementar habilidades de cada pokémon y mejor progresión.

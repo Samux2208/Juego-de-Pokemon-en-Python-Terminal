@@ -1,18 +1,18 @@
-"""Pruebas de aceptación para los requisitos de la Entrega 1.
+'''Pruebas de aceptación para los requisitos de la Entrega 1.
 
 Ejecutar desde la carpeta raíz:
     python -m tests.test_entrega1
 
 Requiere los JSON de datos que usa el proyecto (datos/pokemon_gen3.json y
 datos/movimientos_gen3.json), igual que el arranque normal del juego.
-"""
+'''
 
-from modelos.pokemon import Pokemon, PokemonJugador, PokemonSalvaje
+from modelos.pokemon import Pokemon, PokemonAtrapado, PokemonSalvaje
 
 
 def ejecutar_pruebas():
     # 1. Las dos clases hijas realmente heredan de Pokemon.
-    jugador = PokemonJugador(
+    jugador = PokemonAtrapado(
         "Charmander", 5, entrenador="Entrenador de prueba", apodo="Chispa"
     )
     salvaje = PokemonSalvaje(
@@ -42,7 +42,7 @@ def ejecutar_pruebas():
 
     # 5. Los constructores validan los datos específicos de las hijas.
     try:
-        PokemonJugador("Charmander", 5, entrenador="")
+        PokemonAtrapado("Charmander", 5, entrenador="")
     except ValueError:
         pass
     else:
@@ -56,8 +56,8 @@ def ejecutar_pruebas():
         raise AssertionError("Se aceptó una rareza no permitida")
 
     # 6. El método protegido de Pokemon se usa desde las hijas al reconstruirlas.
-    restaurado = PokemonJugador.cargar_datos(jugador.exportar_datos())
-    assert isinstance(restaurado, PokemonJugador)
+    restaurado = PokemonAtrapado.cargar_datos(jugador.exportar_datos())
+    assert isinstance(restaurado, PokemonAtrapado)
     assert restaurado.nombre_visible == "Chispa"
 
     print("OK: todas las pruebas de la Entrega 1 pasaron.")

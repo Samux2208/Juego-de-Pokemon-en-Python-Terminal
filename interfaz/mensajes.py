@@ -1,7 +1,8 @@
 import sys
 import time
 import unicodedata
-from config import ICONOS_CATEGORIA, RETRASO_TEXTO, nombre_tipo
+from config import RETRASO_TEXTO
+from datos.tipos_evoluciones import ICONOS_CATEGORIA, nombre_tipo
 from sistemas.efectos import ESTADOS_INFO
 
 def imprimir_con_retraso(s):
@@ -46,7 +47,7 @@ def resumen_movimiento(mov, prefijo="▸"):
 
 
 def mostrar_barras(jugador, rival):
-    """Imprime en consola las barras de vida actuales de ambos combatientes."""
+    '''Imprime en consola las barras de vida actuales de ambos combatientes.'''
     est_rival = (
         f" {ESTADOS_INFO[rival.estado_alterado]['etiqueta']}"
         if rival.estado_alterado in ESTADOS_INFO

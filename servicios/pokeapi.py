@@ -1,11 +1,15 @@
-# ==================================================
-# ARCHIVO: servicios/pokeapi.py
-# ==================================================
+'''Cliente HTTP para descargar y adaptar datos de PokéAPI a Gen III.
+
+Obtiene especies de Kanto, sus habilidades en español (tipo Mar Llamas,
+Espesura, Torrente, etc.), descripciones en español y movimientos
+compatibles con Pokémon Rojo Fuego y Verde Hoja.
+'''
+
 import json
 import time
-import urllib.request
 import urllib.error
-from config import TIPOS_ESPECIALES
+import urllib.request
+from datos.tipos_evoluciones import TIPOS_ESPECIALES
 
 BASE_URL = "https://pokeapi.co/api/v2"
 
@@ -15,7 +19,7 @@ MAPA_TIPOS_ES = {
     "fighting": "lucha", "poison": "veneno", "ground": "tierra",
     "flying": "volador", "psychic": "psiquico", "bug": "bicho",
     "rock": "roca", "ghost": "fantasma", "dragon": "dragon",
-    "dark": "siniestro", "steel": "acero"
+    "dark": "siniestro", "steel": "acero",
 }
 
 MAPA_STATS = {
@@ -63,34 +67,93 @@ EXP_BASE_GEN3 = {
 }
 
 
-def _get_json(url, reintentos=4):
+def _get_json(url: str, reintentos: int = 4) -> dict:
+    '''Realiza una petición GET a PokéAPI y devuelve el JSON con reintentos.'''
     req = urllib.request.Request(url, headers={"User-Agent": "POOkemon-Gen3/1.0"})
     for intento in range(1, reintentos + 1):
         try:
             with urllib.request.urlopen(req, timeout=30) as resp:
                 return json.loads(resp.read().decode("utf-8"))
-        except (TimeoutError, urllib.error.URLError) as e:
+        except (TimeoutError, urllib.error.URLError):
             if intento == reintentos:
                 raise
             print(f" ⏳ Conexión lenta en {url} (intento {intento}/{reintentos}), reintentando...")
             time.sleep(2 * intento)
 
 
-def obtener_nombre_es(nombres_lista, fallback):
+def obtener_nombre_es(nombres_lista: list[dict], fallback: str) -> str:
+    '''Devuelve el nombre en español de una lista `names` o un respaldo.'''
     for entrada in nombres_lista:
         if entrada["language"]["name"] == "es":
             return entrada["name"]
     return fallback.capitalize()
 
 
-def _aplicar_valores_gen3(data_mov):
-    '''Revierte power, accuracy, pp y type a los valores exactos de Rojo Fuego / Verde Hoja.'''
+def _limpiar_texto_es(flavor_entries: list[dict]) -> str:
+    '''Extrae una descripción limpia en español, priorizando Rojo Fuego / Verde Hoja.'''
+    respaldo = ""
+    for entry in flavor_entries:
+        if entry["language"]["name"] == "es":
+            texto = " ".join(entry["flavor_text"].replace("\f", " ").split())
+            version = (
+                entry.get("version", {}).get("name")
+                or entry.get("version_group", {}).get("name")
+            )
+            if version in ("firered", "leafgreen", "firered-leafgreen"):
+                return texto
+            if not respaldo:
+                respaldo = texto
+    return respaldo
+
+
+def _obtener_habilidad_es(url_habilidad: str, cache: dict[str, dict]) -> dict:
+    '''Descarga y cachea el nombre y descripción en español de una habilidad.'''
+    if url_habilidad in cache:
+        return cache[url_habilidad]
+
+    data_hab = _get_json(url_habilidad)
+    nombre_es = obtener_nombre_es(data_hab["names"], data_hab["name"])
+    descripcion_es = _limpiar_texto_es(data_hab.get("flavor_text_entries", []))
+
+    habilidad = {
+        "nombre": nombre_es,
+        "descripcion": descripcion_es,
+    }
+    cache[url_habilidad] = habilidad
+    return habilidad
+
+
+def _extraer_habilidades_gen3(data_poke: dict, cache_habilidades: dict[str, dict]) -> list[dict]:
+    '''Obtiene las habilidades normales (no ocultas) en español de un Pokémon.'''
+    slots = {
+        ab["slot"]: ab["ability"]["url"]
+        for ab in data_poke.get("abilities", [])
+        if not ab.get("is_hidden", False) and ab.get("ability")
+    }
+
+    for past in data_poke.get("past_abilities", []):
+        for ab in past.get("abilities", []):
+            if ab.get("is_hidden", False):
+                continue
+            slot = ab["slot"]
+            if ab.get("ability") is None:
+                slots.pop(slot, None)
+            else:
+                slots[slot] = ab["ability"]["url"]
+
+    return [
+        _obtener_habilidad_es(slots[slot], cache_habilidades)
+        for slot in sorted(slots)
+    ]
+
+
+def _aplicar_valores_gen3(data_mov: dict) -> tuple[int, int, int, str]:
+    '''Revierte potencia, precisión, PP y tipo de un movimiento a Gen III.'''
     potencia = data_mov["power"]
     precision = data_mov["accuracy"]
     pp = data_mov["pp"]
     tipo_en = data_mov["type"]["name"]
 
-    # Recorremos past_values desde el cambio más reciente hacia atrás hasta llegar a Gen III
     past_values = data_mov.get("past_values", [])
     orden_versiones = {v: i for i, v in enumerate(VERSIONES_POST_GEN3)}
     cambios_ordenados = sorted(
@@ -114,48 +177,51 @@ def _aplicar_valores_gen3(data_mov):
     return potencia or 0, precision or 100, pp or 15, tipo_en
 
 
-def descargar_pokemon_kanto(limite=151):
+def descargar_pokemon_kanto(limite: int = 151) -> tuple[dict, set[str]]:
+    '''Descarga los Pokémon de Kanto con habilidades y descripción en español.'''
     pokedex = {}
     movimientos_ids = set()
+    cache_habilidades = {}
 
     for poke_id in range(1, limite + 1):
         data_poke = _get_json(f"{BASE_URL}/pokemon/{poke_id}")
         data_spec = _get_json(f"{BASE_URL}/pokemon-species/{poke_id}")
 
         nombre_es = obtener_nombre_es(data_spec["names"], data_poke["name"])
-        tipos = [MAPA_TIPOS_ES[t["type"]["name"]] for t in data_poke["types"] if t["type"]["name"] in MAPA_TIPOS_ES]
+        tipos = [
+            MAPA_TIPOS_ES[t["type"]["name"]]
+            for t in data_poke["types"]
+            if t["type"]["name"] in MAPA_TIPOS_ES
+        ]
         if not tipos:
             tipos = ["normal"]
 
-        stats_base = {MAPA_STATS[s["stat"]["name"]]: s["base_stat"] for s in data_poke["stats"]}
+        stats_base = {
+            MAPA_STATS[s["stat"]["name"]]: s["base_stat"]
+            for s in data_poke["stats"]
+        }
 
-        # Filtrar movimientos aprendidos por nivel exclusivamente en Rojo Fuego / Verde Hoja
+        habilidades = _extraer_habilidades_gen3(data_poke, cache_habilidades)
+
         movs_nivel = []
         for m in data_poke["moves"]:
             for detalle in m["version_group_details"]:
-                if (detalle["version_group"]["name"] == "firered-leafgreen"
-                        and detalle["move_learn_method"]["name"] == "level-up"):
+                if (
+                    detalle["version_group"]["name"] == "firered-leafgreen"
+                    and detalle["move_learn_method"]["name"] == "level-up"
+                ):
                     movs_nivel.append((detalle["level_learned_at"], m["move"]["url"]))
                     movimientos_ids.add(m["move"]["url"])
                     break
 
         movs_nivel.sort(key=lambda x: x[0])
-
-        # Descripción de Pokédex en español (prioriza Rojo Fuego/Verde Hoja, o usa respaldo en español)
-        descripcion = ""
-        for entry in data_spec["flavor_text_entries"]:
-            if entry["language"]["name"] == "es":
-                texto = entry["flavor_text"].replace("\n", " ").replace("\f", " ")
-                if entry["version"]["name"] in ("firered", "leafgreen"):
-                    descripcion = texto
-                    break
-                if not descripcion:
-                    descripcion = texto
+        descripcion = _limpiar_texto_es(data_spec.get("flavor_text_entries", []))
 
         pokedex[nombre_es] = {
             "id": poke_id,
             "nombre": nombre_es,
             "tipos": tipos,
+            "habilidades": habilidades,
             "stats_base": stats_base,
             "exp_base": EXP_BASE_GEN3.get(poke_id, data_poke["base_experience"] or 60),
             "ratio_captura": data_spec["capture_rate"],
@@ -164,13 +230,14 @@ def descargar_pokemon_kanto(limite=151):
             "movimientos_nivel": [(lvl, url) for lvl, url in movs_nivel],
             "descripcion": descripcion,
         }
-        print(f"[{poke_id:03d}/151] Descargado: {nombre_es}")
-        time.sleep(0.1) # Pausa breve al terminar cada Pokémon
+        print(f"[{poke_id:03d}/{limite}] Descargado: {nombre_es}")
+        time.sleep(.1)
 
     return pokedex, movimientos_ids
 
 
-def descargar_movimientos(urls_movimientos):
+def descargar_movimientos(urls_movimientos: set[str]) -> tuple[dict, dict]:
+    '''Descarga los movimientos con sus valores Gen III y descripción en español.'''
     catalogo_movs = {}
     mapa_url_nombre = {}
 
@@ -183,15 +250,14 @@ def descargar_movimientos(urls_movimientos):
 
         tipo_es = MAPA_TIPOS_ES[tipo_en]
         nombre_es = obtener_nombre_es(data_mov["names"], data_mov["name"])
-        clase_dano = data_mov["damage_class"]["name"]  # 'physical', 'special', 'status'
+        descripcion_es = _limpiar_texto_es(data_mov.get("flavor_text_entries", []))
+        clase_dano = data_mov["damage_class"]["name"]
 
-        # Regla Gen 3: si hace daño, físico/especial depende del TIPO elemental
         if clase_dano == "status":
             categoria = "estado"
         else:
             categoria = "especial" if tipo_es in TIPOS_ESPECIALES else "fisico"
 
-        # Extraer efectos de estado y cambios de estadísticas oficiales (incluyendo precisión y evasión)
         meta = data_mov.get("meta") or {}
         estado_ailment = (meta.get("ailment") or {}).get("name", "none")
         prob_estado = meta.get("ailment_chance", 0)
@@ -202,7 +268,6 @@ def descargar_movimientos(urls_movimientos):
         ]
         prob_stat = meta.get("stat_chance", 0) or (100 if cambios_stats and potencia == 0 else 0)
 
-        # Ajuste histórico Gen III: Giro Rápido no subía velocidad antes de Gen VIII
         if data_mov["name"] == "rapid-spin":
             cambios_stats = []
             prob_stat = 0
@@ -221,6 +286,7 @@ def descargar_movimientos(urls_movimientos):
             "prob_estado": prob_estado,
             "cambios_stats": cambios_stats,
             "prob_stat": prob_stat,
+            "descripcion": descripcion_es,
         }
         mapa_url_nombre[url] = nombre_es
         print(f"Movimiento descargado: {nombre_es} ({tipo_es} | {categoria})")

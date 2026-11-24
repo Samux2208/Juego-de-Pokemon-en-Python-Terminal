@@ -1,16 +1,18 @@
-"""Persistencia de partidas: formato versionado, migraciones, validación y copias de seguridad.
+'''Paquete de persistencia para partidas de Pokémon Gen III.
 
-Este paquete trabaja solo con diccionarios JSON; no importa clases del juego,
-así que no puede generar importaciones circulares.
-"""
+Expone utilidades de migración de versión, validación de datos y guardado o
+carga segura de partidas.
+'''
+
+from .guardado import ErrorGuardado, cargar_partida, guardar_partida
 from .migraciones import VERSION_ACTUAL, migrar
 from .validacion import validar
-from .guardado import (
-    guardar_partida,
-    cargar_partida,
-)
 
 __all__ = [
-    "VERSION_ACTUAL", "migrar", "validar",
-    "PartidaNoEncontrada", "PartidaInvalida", "guardar", "cargar",
+    "VERSION_ACTUAL",
+    "migrar",
+    "validar",
+    "ErrorGuardado",
+    "guardar_partida",
+    "cargar_partida",
 ]

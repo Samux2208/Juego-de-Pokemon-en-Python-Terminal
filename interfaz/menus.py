@@ -1,16 +1,17 @@
+'''Menús de exploración, equipo, mochila y servicios de Kanto.'''
+
 import random
 import time
-from config import EVOLUCIONES_OBJETO
-from servicios.repositorio import RUTAS
+from mundo.rutas import RUTAS
 from modelos.pokemon import Pokemon
-from modelos.objeto import OBJETOS, Pocion, PiedraEvolutiva
-from modelos.entrenador import EntrenadorNPC
+from modelos.objeto import OBJETOS
+from modelos.entrenador import EntrenadorNPC, LiderGimnasio
 from mundo.localizaciones import TiendaPokemon, CentroPokemon
-from sistemas.evolucion import evolucionar_pokemon
 from sistemas.combate import _elegir_pokemon_activo, combatir_salvaje, combatir_entrenador
 from sistemas.encuentros import explorar_ruta
 from interfaz.mensajes import imprimir_con_retraso, ajustar_ancho
 from interfaz.pokedex_ui import ficha_pokemon
+
 
 def gestionar_equipo(equipo):
     '''Muestra la interfaz de consola del PC (Depositar, Sacar, Mover y Ver Ficha).'''
@@ -229,14 +230,14 @@ def gestionar_mochila(equipo, mochila, en_tienda=False):
             print("\n" + " ╔" + "═" * 52 + "╗")
             print(f" ║{ajustar_ancho(f'  🏪 CATÁLOGO DE LA TIENDA POKÉMON', 52)}║")
             print(" ╠" + "═" * 52 + "╣")
-            time.sleep(0.5)
+            time.sleep(.5)
 
             fila_saldo = f"  💰 Tu Saldo: {mochila.dinero} ₽"
             print(f" ║{ajustar_ancho(fila_saldo, 52)}║")
             print(" ╟" + "─" * 52 + "╢")
             print(f" ║{ajustar_ancho('   Nº  │ ARTÍCULO             │ PRECIO', 52)}║")
             print(" ╟" + "─" * 52 + "╢")
-            time.sleep(0.5)
+            time.sleep(.5)
 
             catalogo = list(OBJETOS.values())
             for i, objeto in enumerate(catalogo, start=1):
@@ -325,35 +326,51 @@ def gestionar_mochila(equipo, mochila, en_tienda=False):
             print(" ❌ Debes ingresar un número válido.")
             continue
 
-        # --- CASO 1: POCIONES CURATIVAS ---
-        if isinstance(objeto, Pocion):
-            pokemon = _elegir_pokemon_activo(equipo)
-            if pokemon:
-                curacion = objeto.usar(pokemon)
-                if curacion:
-                    mochila.quitar(objeto.identificador)
-                    print(f" 💚 ¡{pokemon.nombre_visible} recuperó {curacion} PS!")
+        objetivo = None
+        if objeto.requiere_objetivo:
+            objetivo = _elegir_objetivo_mochila(equipo)
+            if objetivo is None:
+                continue
 
-        # --- CASO 2: PIEDRAS EVOLUTIVAS ---
-        elif isinstance(objeto, PiedraEvolutiva):
-            elegibles = EVOLUCIONES_OBJETO.get(objeto.nombre, {})
-            pokemon = _elegir_pokemon_activo(equipo)
-            if pokemon and pokemon.especie in elegibles:
-                evolucionar_pokemon(pokemon, elegibles[pokemon.especie])
-                mochila.quitar(objeto.identificador)
-            elif pokemon:
-                print(f"\n ⚠️  {objeto.nombre} no tiene ningún efecto en {pokemon.nombre_visible}.")
-
-        # --- CASO 3: POKé BALLS U OTROS OBJETOS DE COMBATE ---
+        consumido, _ = objeto.usar({
+            "equipo": equipo,
+            "mochila": mochila,
+            "objetivo": objetivo,
+        })
+        if consumido:
+            mochila.quitar(objeto.identificador)
         else:
-            imprimir_con_retraso(" ⚠️  Ese objeto solo puede usarse durante un combate salvaje.")
+            imprimir_con_retraso(
+                f" ⚠️  No se pudo usar {objeto.nombre} en este momento."
+            )
 
 
-def zona_segura(equipo, mochila):
+def _elegir_objetivo_mochila(equipo):
+    '''Permite elegir cualquier Pokémon del equipo como objetivo de un objeto.'''
+    if not equipo.pokemon:
+        return None
+
+    for indice, pokemon in enumerate(equipo.pokemon, start=1):
+        estado = "💀" if pokemon.salud_actual <= 0 else "❤️"
+        print(
+            f" [{indice}] {estado} {pokemon.nombre_visible} "
+            f"PS {pokemon.salud_actual}/{pokemon.salud_maxima}"
+        )
+    while True:
+        entrada = input(" 👉 Elige el Pokémon objetivo: ").strip()
+        if entrada.isdigit():
+            indice = int(entrada) - 1
+            if 0 <= indice < len(equipo.pokemon):
+                return equipo.pokemon[indice]
+        print(" ❌ Opción no válida.")
+
+
+def zona_segura(equipo, mochila, nombre_entrenador="Entrenador"):
     '''Muestra el menú de servicios del Pueblo / Zona segura.
     
     Permite al entrenador curar a su equipo en el Centro Pokémon, comprar
-    objetos en la Tienda, administrar el Equipo/PC o usar ítems de su Mochila.
+    objetos en la Tienda, administrar el Equipo/PC, usar la mochila o desafiar
+    a Brock. Devuelve `"fin"` si el desafío de gimnasio termina la partida.
     '''
     while True:
         print("\n" + " ╔" + "═" * 48 + "╗")
@@ -363,6 +380,7 @@ def zona_segura(equipo, mochila):
         print(f" ║{ajustar_ancho(' [2] 💻 PC de Bill (Almacenamiento Pokémon)', 48)}║")
         print(f" ║{ajustar_ancho(' [3] 🏪 Tienda Pokémon (Comprar objetos)', 48)}║")
         print(f" ║{ajustar_ancho(' [4] 🎒 Mochila (Objetos y Evolución)', 48)}║")
+        print(f" ║{ajustar_ancho(' [5] 🏅 Desafiar a Brock (Gimnasio Plateada)', 48)}║")
         print(" ╟" + "─" * 48 + "╢")
         print(f" ║{ajustar_ancho(' [X] 🔙 Volver al menú principal', 48)}║")
         print(" ╚" + "═" * 48 + "╝")
@@ -381,10 +399,24 @@ def zona_segura(equipo, mochila):
         elif op == "4":
             # Abre la mochila para usar pociones o piedras evolutivas
             gestionar_mochila(equipo, mochila)
+        elif op == "5":
+            desafiar_lider_gimnasio(nombre_entrenador, equipo, mochila)
+            return "fin"
         elif op == "x":
             return
         else:
             print(" ❌ Opción no válida. Elige un número entre 1 y 5.")
+
+
+def desafiar_lider_gimnasio(nombre_entrenador, equipo, mochila) -> bool:
+    '''Inicia el desafío final de Brock en el Gimnasio Plateada.'''
+    lider = LiderGimnasio(
+        nombre="Brock",
+        equipo=[Pokemon("Geodude", 3)],
+        gimnasio="Gimnasio Plateada",
+        medalla="Medalla Roca",
+    )
+    return combatir_entrenador(equipo, mochila, lider, nombre_entrenador)
 
 
 def menu_rutas(nombre_entrenador, equipo, mochila):
@@ -435,7 +467,7 @@ def menu_rutas(nombre_entrenador, equipo, mochila):
         print(" ╟" + "─" * 58 + "╢")
         print(f" ║{ajustar_ancho('  [X]  │ 🔙 Guardar el Mapa y volver al menú', 58)}║")
         print(" ╚" + "═" * 58 + "╝")
-        time.sleep(0.5)
+        time.sleep(.5)
 
         # Capturamos y validamos el destino elegido
         op_ruta = input(" 🧭 ¿A qué destino de Kanto deseas viajar?: ").strip().lower()

@@ -1,5 +1,5 @@
 import random
-from servicios.repositorio import RUTAS
+from mundo.rutas import RUTAS
 from modelos.pokemon import PokemonSalvaje
 
 # == EXPLORACIÓN DE RUTAS ====================================

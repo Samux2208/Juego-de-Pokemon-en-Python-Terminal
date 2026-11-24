@@ -1,117 +1,167 @@
-"""Registro de migraciones del formato de guardado.
+'''Registro de migraciones del formato de guardado para Pokémon Gen III.
 
-Cada migración transforma un diccionario de la versión N a la N+1 y es una
-función pura (no toca disco ni modifica el diccionario original).
+Cada migración transforma un diccionario de la versión N a la N+1 como una
+función pura (no accede a disco ni muta el diccionario original recibido).
 
 Para añadir una versión futura (ejemplo, v3):
-  1. Incrementar VERSION_ACTUAL a 3.
-  2. Escribir `_migrar_v2_a_v3(datos)` y registrarla en MIGRACIONES como `2: _migrar_v2_a_v3`.
-  3. Actualizar validacion.py y añadir una prueba en tests/test_guardado.py.
-"""
+  1. Incrementar `VERSION_ACTUAL` a 3 (y alinear `VERSION` en `config.py`).
+  2. Escribir `_migrar_v2_a_v3(datos)` y registrarla en `MIGRACIONES` como `2: _migrar_v2_a_v3`.
+  3. Actualizar `validacion.py` y añadir pruebas en `tests/test_guardado.py`.
+'''
 
-# Importamos 'copy' para clonar diccionarios complejos sin alterar los datos originales
 import copy
 
-# Constante que indica cuál es la versión más reciente que entiende tu juego hoy
-VERSION_ACTUAL = 2
+# Versión más reciente del esquema de partida soportada por este módulo
+VERSION_ACTUAL: int = 2
+
+# Clases válidas de Pokémon en el modelo multinivel actual
+_CLASES_POKEMON_VALIDAS = {
+    "Pokemon",
+    "PokemonCapturable",
+    "PokemonSalvaje",
+    "PokemonAtrapado",
+}
 
 
-def _migrar_v1_a_v2(datos):
-  """Transforma una partida de v1 (formato plano) a v2 (formato agrupado por secciones).
+def _normalizar_entrada_pokemon(entrada: dict) -> dict:
+    '''Normaliza la `"clase"` de un diccionario de Pokémon al migrar a v2.
 
-    Cambios estructurales:
-      - 'nombre_entrenador' pasa a vivir dentro de 'entrenador': {'nombre': ...}.
-      - Se crea la sección 'progreso' con valores iniciales por defecto.
-      - Se genera la 'pokedex' automáticamente revisando los Pokémon que ya tiene el
-      jugador.
-      - 'equipo' y 'mochila' conservan exactamente su misma estructura interna.
-    """
-  # Extraemos el diccionario del equipo (si no existe, usamos uno vacío para evitar errores)
-  equipo = datos.get("equipo", {})
-
-  # Lista temporal para recolectar los nombres únicos de los Pokémon del jugador
-  especies = []
-
-  # Unimos la lista del equipo activo y la del PC para revisar todos los Pokémon que posee
-  todos_los_pokemon = equipo.get("pokemon", []) + equipo.get("pc", [])
-
-  for p in todos_los_pokemon:
-    # Verificamos que cada elemento sea un diccionario válido y tenga un nombre en texto
-    if isinstance(p, dict) and isinstance(p.get("nombre"), str):
-      # Evitamos guardar nombres duplicados en la Pokédex (ej: si tiene dos Pikachu)
-      if p["nombre"] not in especies:
-        especies.append(p["nombre"])
-
-  # Retornamos un diccionario completamente nuevo con el formato exacto de la versión 2
-  return {
-      "version": 2,
-      "entrenador": {"nombre": datos.get("nombre_entrenador")},
-      "progreso": {
-          "ubicacion_actual": "Pueblo Paleta",
-          "insignias": [],
-          "eventos_completados": [],
-      },
-      "equipo": equipo,
-      "mochila": datos.get("mochila", {}),
-      # Como v1 no tenía Pokédex, asumimos que vio y capturó las especies que ya posee
-      "pokedex": {"vistos": list(especies), "capturados": list(especies)},
-  }
-
-
-# Diccionario mapa que conecta cada versión antigua con la función que la actualiza.
-# Clave = versión de origen | Valor = función que la convierte a la versión siguiente
-MIGRACIONES = {1: _migrar_v1_a_v2}
-
-
-def migrar(datos):
-  """Recibe un diccionario de partida y lo actualiza paso a paso hasta VERSION_ACTUAL.
+    Mantiene compatibilidad con partidas antiguas donde el Pokémon venía sin
+    `"clase"` o usaba `"PokemonJugador"` antes de la jerarquía
+    `Pokemon` -> `PokemonCapturable` -> `PokemonSalvaje` / `PokemonAtrapado`.
 
     Args:
-        datos (dict): Datos crudos leídos directamente desde el archivo JSON.
+        entrada: Diccionario serializado de un Pokémon.
 
     Returns:
-        dict: Una copia limpia y actualizada de los datos en formato
-          VERSION_ACTUAL.
+        dict: Copia del diccionario con `"clase"` normalizada si era un `dict`.
+    '''
+    if not isinstance(entrada, dict):
+        return entrada
+
+    poke = dict(entrada)
+    clase_actual = poke.get("clase")
+
+    if clase_actual == "PokemonJugador":
+        poke["clase"] = "PokemonAtrapado"
+    elif clase_actual not in _CLASES_POKEMON_VALIDAS:
+        # Si tiene datos de entrenador o apodo, corresponde a un Pokémon atrapado
+        if "apodo" in poke or "entrenador" in poke:
+            poke["clase"] = "PokemonAtrapado"
+        else:
+            poke["clase"] = "Pokemon"
+
+    return poke
+
+
+def _migrar_v1_a_v2(datos: dict) -> dict:
+    '''Transforma una partida de v1 (formato plano) a v2 (secciones estructuradas).
+
+    Cambios estructurales:
+      - `'nombre_entrenador'` pasa a `'entrenador': {'nombre': ...}`.
+      - Se añade la sección `'progreso'` con valores iniciales de Kanto.
+      - Se normaliza la `'clase'` de los Pokémon en `'equipo'` y `'pc'`.
+      - Se construye `'pokedex'` con `'vistos'` y `'capturados'` a partir de las
+        especies presentes en el equipo y el PC.
+
+    Args:
+        datos: Diccionario de partida en versión 1.
+
+    Returns:
+        dict: Nuevo diccionario con el formato de versión 2.
+    '''
+    equipo_raw = datos.get("equipo") if isinstance(datos.get("equipo"), dict) else {}
+    lista_equipo = [
+        _normalizar_entrada_pokemon(p) for p in equipo_raw.get("pokemon", [])
+    ]
+    lista_pc = [
+        _normalizar_entrada_pokemon(p) for p in equipo_raw.get("pc", [])
+    ]
+
+    equipo_migrado = {
+        "pokemon": lista_equipo,
+        "pc": lista_pc,
+    }
+
+    # Recolecta especies únicas presentes en el equipo activo y el PC para la Pokédex
+    especies: list[str] = []
+    for p in lista_equipo + lista_pc:
+        if isinstance(p, dict) and isinstance(p.get("nombre"), str):
+            especie = p["nombre"]
+            if especie not in especies:
+                especies.append(especie)
+
+    mochila_raw = datos.get("mochila") if isinstance(datos.get("mochila"), dict) else {}
+
+    return {
+        "version": 2,
+        "entrenador": {"nombre": datos.get("nombre_entrenador")},
+        "progreso": {
+            "ubicacion_actual": "Pueblo Paleta",
+            "insignias": [],
+            "eventos_completados": [],
+        },
+        "equipo": equipo_migrado,
+        "mochila": mochila_raw,
+        # En v1 no existía Pokédex; se registran como vistas y capturadas las especies poseídas
+        "pokedex": {
+            "vistos": list(especies),
+            "capturados": list(especies),
+        },
+    }
+
+
+# Mapa escalonado de migraciones: version_origen -> funcion_migracion
+MIGRACIONES: dict[int, callable] = {
+    1: _migrar_v1_a_v2,
+}
+
+
+def migrar(datos: dict) -> dict:
+    '''Actualiza un diccionario de partida paso a paso hasta `VERSION_ACTUAL`.
+
+    No modifica el diccionario original (`datos`); trabaja sobre una copia profunda.
+
+    Args:
+        datos: Diccionario leído desde el archivo JSON de partida.
+
+    Returns:
+        dict: Diccionario migrado y listo para validar en `VERSION_ACTUAL`.
 
     Raises:
-        ValueError: Si los datos no son un diccionario, la versión es inválida,
-                    es de una versión futura o falta una función de migración.
-    """
-  # 1. Validación inicial: el archivo JSON raíz debe ser un diccionario (objeto)
-  if not isinstance(datos, dict):
-    raise ValueError("La partida no es un objeto JSON.")
+        ValueError: Si `datos` no es un `dict`, la versión es inválida, supera
+            `VERSION_ACTUAL` o falta una función de migración en la cadena.
+    '''
+    # 1. La raíz del JSON debe ser un objeto/diccionario
+    if not isinstance(datos, dict):
+        raise ValueError("La partida no es un objeto JSON.")
 
-  version = datos.get("version")
+    version = datos.get("version")
 
-  # 2. Validamos que 'version' sea un número entero positivo (1, 2, 3...).
-  # Nota: descartamos `bool` explícitamente porque en Python `True == 1` es verdadero.
-  if isinstance(version, bool) or not isinstance(version, int) or version < 1:
-    raise ValueError(f"Versión de guardado inválida: {version!r}")
+    # 2. La versión debe ser un entero >= 1 (se excluyen bool porque True == 1 en Python)
+    if isinstance(version, bool) or not isinstance(version, int) or version < 1:
+        raise ValueError(f"Versión de guardado inválida: {version!r}")
 
-  # 3. Evitamos abrir partidas creadas en una versión más nueva del juego (downgrade)
-  if version > VERSION_ACTUAL:
-    raise ValueError(
-        f"La partida es de una versión más nueva ({version}) que la soportada"
-        f" ({VERSION_ACTUAL})."
-    )
+    # 3. Evita cargar partidas creadas en versiones superiores del juego
+    if version > VERSION_ACTUAL:
+        raise ValueError(
+            f"La partida es de una versión más nueva ({version}) que la soportada "
+            f"({VERSION_ACTUAL})."
+        )
 
-  # 4. Hacemos una copia profunda (deepcopy) para no modificar el diccionario original
-  # si ocurre algún error a mitad del proceso de migración.
-  datos = copy.deepcopy(datos)
+    # 4. Copia profunda para preservar el diccionario original ante cualquier fallo
+    datos_migrados = copy.deepcopy(datos)
 
-  # 5. Bucle escalonado: actualiza la partida versión por versión (ej: v1 -> v2 -> v3)
-  while datos["version"] < VERSION_ACTUAL:
-    version_en_curso = datos["version"]
-    paso = MIGRACIONES.get(version_en_curso)
+    # 5. Avanza versión por versión hasta alcanzar VERSION_ACTUAL
+    while datos_migrados["version"] < VERSION_ACTUAL:
+        version_en_curso = datos_migrados["version"]
+        paso = MIGRACIONES.get(version_en_curso)
 
-    # Si falta un eslabón en la cadena de migraciones, detenemos el proceso con error claro
-    if paso is None:
-      raise ValueError(
-          f"No existe migración desde la versión {version_en_curso}."
-      )
+        if paso is None:
+            raise ValueError(
+                f"No existe migración desde la versión {version_en_curso}."
+            )
 
-    # Ejecutamos la función de migración y reemplazamos `datos` con la nueva versión
-    datos = paso(datos)
+        datos_migrados = paso(datos_migrados)
 
-  return datos
-  
+    return datos_migrados

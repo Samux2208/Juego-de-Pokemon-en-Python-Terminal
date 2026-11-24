@@ -1,5 +1,5 @@
 from config import NIVEL_MAXIMO
-from servicios.repositorio import DICCIONARIO_POKEMON
+from servicios.catalogos import DICCIONARIO_POKEMON
 from sistemas.estadisticas import exp_para_nivel, generar_movimientos
 from sistemas.evolucion import verificar_evolucion_nivel
 

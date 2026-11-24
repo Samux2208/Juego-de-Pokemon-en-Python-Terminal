@@ -1,7 +1,7 @@
 import random
 import time
-from servicios.repositorio import DICCIONARIO_POKEMON
-from modelos.pokemon import PokemonJugador
+from servicios.catalogos import DICCIONARIO_POKEMON
+from modelos.pokemon import PokemonAtrapado
 from interfaz.mensajes import imprimir_con_retraso
 
 # == MECÁNICA DE CAPTURA DE POKéMON ==========================
@@ -41,7 +41,7 @@ def _gestionar_captura(salvaje, equipo, mochila, bonus_ball=1.0,
     # Narración visual de los movimientos de la Poké Ball en combate
     for _ in range(min(3, agitamientos)):
         imprimir_con_retraso(" *La Poké Ball se mueve...*\n")
-        time.sleep(0.6)
+        time.sleep(.6)
 
     if agitamientos < 4:
         mensajes_escape = [
@@ -63,8 +63,8 @@ def _gestionar_captura(salvaje, equipo, mochila, bonus_ball=1.0,
         while not apodo or len(apodo) > 15:
             apodo = input(" Apodo inválido. Introduce entre 1 y 15 caracteres: ").strip()
 
-    # Creamos la instancia de PokemonJugador conservando su estado de salud y EXP
-    capturado = PokemonJugador(
+    # Creamos la instancia de PokemonAtrapado conservando su estado de salud y EXP
+    capturado = PokemonAtrapado(
         salvaje.especie, salvaje.nivel,
         entrenador=nombre_entrenador,
         apodo=apodo

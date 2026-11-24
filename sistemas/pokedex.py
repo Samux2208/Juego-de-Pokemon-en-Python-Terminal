@@ -1,5 +1,5 @@
 from config import INICIALES
-from servicios.repositorio import RUTAS
+from mundo.rutas import RUTAS
 
 # ==  CONSULTA DE DATOS ==========================
 # describir_disponibilidad() | Indica en qué rutas o eventos se obtiene un Pokémon.

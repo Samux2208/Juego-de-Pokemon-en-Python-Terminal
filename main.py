@@ -1,27 +1,27 @@
-"""Punto de entrada del juego.
+'''Punto de entrada principal de la aplicación.
 
-Responsabilidad única: verificar que los datos existen y arrancar el juego.
-No contiene lógica de juego ni de interfaz.
-"""
+Responsabilidad única: verificar que los datos del juego existan y sean
+válidos antes de iniciar el flujo principal.
+'''
+
 import sys
 from servicios.validador_datos import validar_datos
 
 
 def main() -> None:
-    """Valida los datos y, solo si son correctos, inicia el juego.
-
-    El import de `juego` es diferido (dentro de la función) a propósito:
-    importar `juego` carga el repositorio y los JSON, y si faltan archivos
-    el error debe ocurrir DENTRO del try/except, no antes.
-    """
+    '''Valida los archivos base y arranca el juego si todo está correcto.'''
     try:
-        validar_datos()  # Comprueba que los JSON de PokéAPI existen y son válidos
+        # Se comprueba antes de importar `juego` para que un error de datos
+        # se capture aquí y no a mitad de la carga de módulos.
+        validar_datos()
     except (FileNotFoundError, ValueError) as error:
-        print(f"\n ❌ Error crítico en los datos del juego: {error}")
-        print(" 💡 Ejecuta el script ETL de PokéAPI antes de iniciar.\n")
-        sys.exit(1)  # Código 1 = terminación con error
+        print(f"\nError crítico en los datos del juego: {error}")
+        print("Ejecuta primero el generador/cargador de datos antes de jugar.\n")
+        sys.exit(1)
 
-    from juego import iniciar_juego  # Import diferido (ver docstring)
+    # Import diferido a propósito: evita cargar repositorios y estados
+    # si la validación inicial de datos ya falló.
+    from juego import iniciar_juego
     iniciar_juego()
 
 

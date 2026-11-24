@@ -1,38 +1,53 @@
-"""Lectura y escritura segura del estado del juego (entrenador, equipo, PC y mochila).
+'''Lectura y escritura segura de partidas guardadas para Pokémon Gen III.
 
 Garantías:
-  - La escritura es atómica (archivo temporal + Path.replace): un corte de luz
-    a mitad de guardado no deja un JSON corrupto o a medias.
-  - Antes de sobrescribir, la partida válida anterior se respalda en BACKUPS_DIR.
-  - Un archivo ilegible o con datos inválidos se aparta como .corrupto en vez de
-    perderse o romper el juego.
-  - Cero librerías extra de sistema: utiliza únicamente json y pathlib (vía config).
-"""
+  - Escritura atómica mediante archivo temporal (`.tmp`) y `Path.replace`.
+  - Respaldo previo de una partida válida en `BACKUPS_DIR / "partida_backup.json"`.
+  - Apartado de archivos JSON corruptos con sufijo `.corrupto` sin destruir datos.
+  - Reconstrucción polimórfica de subclases de `Pokemon` mediante `REGISTRO_POKEMON`.
+'''
 
 import json
 import shutil
 from config import ARCHIVO_PARTIDA, BACKUPS_DIR, VERSION
 from modelos.equipo import Equipo
 from modelos.mochila import Mochila
-from modelos.pokemon import Pokemon, PokemonJugador, PokemonSalvaje
+from modelos.pokemon import (
+    Pokemon,
+    PokemonAtrapado,
+    PokemonCapturable,
+    PokemonSalvaje,
+)
 from persistencia.migraciones import migrar
 from persistencia.validacion import validar
 
-# ============================================================
-# PERSISTENCIA (GUARDAR Y CARGAR PARTIDA)
-# ============================================================
 
 class ErrorGuardado(Exception):
-    '''Fallo al escribir la partida en disco.'''
+    '''Excepción lanzada cuando ocurre un error al guardar la partida en disco.'''
 
+
+# Registro de clases válidas para reconstruir Pokémon según el campo "clase" del JSON
 REGISTRO_POKEMON = {
     "Pokemon": Pokemon,
-    "PokemonJugador": PokemonJugador,
+    "PokemonCapturable": PokemonCapturable,
+    "PokemonAtrapado": PokemonAtrapado,
+    "PokemonJugador": PokemonAtrapado,  # Compatibilidad con partidas generadas como jugador
     "PokemonSalvaje": PokemonSalvaje,
 }
 
-def _reconstruir_pokemon(datos):
-    '''Busca la clase adecuada en el registro y delega su reconstrucción.'''
+
+def _reconstruir_pokemon(datos: dict):
+    '''Reconstruye la instancia de Pokémon correspondiente según su `"clase"` en JSON.
+
+    Args:
+        datos: Diccionario serializado de un Pokémon.
+
+    Returns:
+        Pokemon: Instancia reconstruida de la clase registrada.
+
+    Raises:
+        ValueError: Si `"clase"` no está registrada en `REGISTRO_POKEMON`.
+    '''
     nombre_clase = datos.get("clase", "Pokemon")
     clase_pokemon = REGISTRO_POKEMON.get(nombre_clase)
     if clase_pokemon is None:
@@ -40,15 +55,27 @@ def _reconstruir_pokemon(datos):
     return clase_pokemon.cargar_datos(datos)
 
 
-def _leer_y_reconstruir(ruta):
-    '''Lee un archivo JSON, lo migra, lo valida y reconstruye los objetos del juego.'''
+def _leer_y_reconstruir(ruta) -> dict:
+    '''Lee un archivo JSON de partida, aplica migraciones, valida y reconstruye el estado.
+
+    Args:
+        ruta: Objeto `Path` apuntando al archivo de partida o backup.
+
+    Returns:
+        dict: Diccionario con `'nombre_entrenador'`, `'equipo'` y `'mochila'`.
+
+    Raises:
+        json.JSONDecodeError: Si el archivo no contiene JSON válido.
+        ValueError: Si la estructura o los datos de la partida no son válidos.
+        OSError: Si ocurre un error de lectura en disco.
+    '''
     contenido = ruta.read_text(encoding="utf-8")
     datos_crudos = json.loads(contenido)
 
-    # 1. Actualizamos el formato si viene de una versión antigua (ej. v1 -> v2)
+    # 1. Migrar estructura desde versiones anteriores si es necesario
     datos_partida = migrar(datos_crudos)
 
-    # 2. Validamos tipos y estructura antes de instanciar clases
+    # 2. Validar esquema y valores antes de instanciar objetos del dominio
     errores = validar(datos_partida)
     if errores:
         raise ValueError(f"Partida inválida: {'; '.join(errores)}")
@@ -67,75 +94,96 @@ def _leer_y_reconstruir(ruta):
     }
 
 
-def guardar_partida(nombre_entrenador, equipo, mochila=None) -> None:
-  '''Guarda el estado serializable de forma atómica. Lanza ErrorGuardado si falla.'''
-  mochila = mochila or Mochila()
+def guardar_partida(nombre_entrenador: str, equipo, mochila=None) -> None:
+    '''Guarda el estado actual de la partida de forma atómica en `ARCHIVO_PARTIDA`.
 
-  # Formato alineado con VERSION_ACTUAL = 2 (migraciones.py y validacion.py)
-  datos_partida = {
-      "version": VERSION,
-      "entrenador": {"nombre": nombre_entrenador},
-      "equipo": equipo.exportar_datos(),
-      "mochila": mochila.exportar_datos(),
-  }
+    Respalda previamente la partida anterior si es un JSON válido y elimina el
+    archivo temporal si ocurre algún fallo durante la exportación o escritura.
 
-  # Aseguramos que tanto la carpeta de partida como la de respaldos existan
-  ARCHIVO_PARTIDA.parent.mkdir(parents=True, exist_ok=True)
-  BACKUPS_DIR.mkdir(parents=True, exist_ok=True)
+    Args:
+        nombre_entrenador: Nombre del entrenador jugador.
+        equipo: Instancia de `Equipo` del jugador.
+        mochila: Instancia opcional de `Mochila` (si es `None`, crea una nueva).
 
-  # Archivo temporal en la misma carpeta para garantizar un reemplazo atómico
-  temporal = ARCHIVO_PARTIDA.with_name(ARCHIVO_PARTIDA.name + ".tmp")
+    Raises:
+        ErrorGuardado: Si falla la serialización o la escritura en disco.
+    '''
+    mochila = mochila or Mochila()
 
-  try:
-    # Respaldo seguro: solo copiamos la partida anterior si es un JSON legible
-    if ARCHIVO_PARTIDA.exists():
-      try:
-        json.loads(ARCHIVO_PARTIDA.read_text(encoding="utf-8"))
-        ruta_backup = BACKUPS_DIR / "partida_backup.json"
-        shutil.copy2(ARCHIVO_PARTIDA, ruta_backup)
-      except (OSError, json.JSONDecodeError):
-        # Si la partida anterior estaba corrupta, evitamos sobrescribir un respaldo sano
-        pass
+    # Garantiza que las carpetas destino existan antes de respaldar o escribir
+    ARCHIVO_PARTIDA.parent.mkdir(parents=True, exist_ok=True)
+    BACKUPS_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Escribimos los nuevos datos en el archivo temporal
-    with temporal.open("w", encoding="utf-8") as archivo:
-      json.dump(datos_partida, archivo, indent=4, ensure_ascii=False)
+    # Archivo temporal en la misma carpeta para permitir un reemplazo atómico
+    temporal = ARCHIVO_PARTIDA.with_name(ARCHIVO_PARTIDA.name + ".tmp")
 
-    # Reemplazo atómico: sustituye el archivo final de golpe
-    temporal.replace(ARCHIVO_PARTIDA)
+    try:
+        datos_partida = {
+            "version": VERSION,
+            "entrenador": {"nombre": nombre_entrenador},
+            "equipo": equipo.exportar_datos(),
+            "mochila": mochila.exportar_datos(),
+        }
 
-  except OSError as error:
-    # Si algo falla al escribir, limpiamos el archivo temporal si quedó suelto
-    temporal.unlink(missing_ok=True)
-    raise ErrorGuardado(str(error)) from error
+        # Respaldar la partida previa solo si su JSON es legible y válido
+        if ARCHIVO_PARTIDA.exists():
+            try:
+                json.loads(ARCHIVO_PARTIDA.read_text(encoding="utf-8"))
+                ruta_backup = BACKUPS_DIR / "partida_backup.json"
+                shutil.copy2(ARCHIVO_PARTIDA, ruta_backup)
+            except (OSError, json.JSONDecodeError):
+                # No sobrescribir el respaldo si la partida anterior estaba dañada
+                pass
+
+        with temporal.open("w", encoding="utf-8") as archivo:
+            json.dump(datos_partida, archivo, indent=4, ensure_ascii=False)
+
+        # Reemplazo atómico del archivo final
+        temporal.replace(ARCHIVO_PARTIDA)
+
+    except (OSError, ValueError, TypeError) as error:
+        temporal.unlink(missing_ok=True)
+        raise ErrorGuardado(str(error)) from error
+
 
 def cargar_partida() -> tuple[dict | None, str | None]:
-  '''Carga la partida principal; si está dañada, intenta recuperar el backup.'''
-  ruta_backup = BACKUPS_DIR / "partida_backup.json"
+    '''Carga la partida principal o recurre al respaldo si aquella está dañada.
 
-  # Si aún no existe archivo de guardado, retornamos None suavemente
-  if not ARCHIVO_PARTIDA.exists() and not ruta_backup.exists():
-    return None, None
+    Si la partida principal tiene JSON corrupto, guarda una copia `.corrupto`.
 
-  # 1. Intentar cargar el archivo principal
-  if ARCHIVO_PARTIDA.exists():
-      try:
-          return _leer_y_reconstruir(ARCHIVO_PARTIDA), None
-      except json.JSONDecodeError:
-          # Solo apartamos como .corrupto si el JSON realmente está roto
-          corrupto = ARCHIVO_PARTIDA.with_name(ARCHIVO_PARTIDA.name + ".corrupto")
-          shutil.copy2(ARCHIVO_PARTIDA, corrupto)
-      except (OSError, ValueError):
-          # Si falló por validación o lectura, no destruimos el archivo original
-          pass
+    Returns:
+        tuple[dict | None, str | None]: `(datos_partida, mensaje_aviso)`.
+            Si no existe partida ni respaldo, devuelve `(None, None)`.
+    '''
+    ruta_backup = BACKUPS_DIR / "partida_backup.json"
 
-  # 2. Plan B (Respaldo): intentar recuperar desde partida_backup.json
-  if ruta_backup.exists():
-      try:
-          datos = _leer_y_reconstruir(ruta_backup)
-          aviso = "⚠️ La partida principal estaba dañada. Se restauró tu copia de seguridad."
-          return datos, aviso
-      except (OSError, json.JSONDecodeError, ValueError):
-          pass
+    if not ARCHIVO_PARTIDA.exists() and not ruta_backup.exists():
+        return None, None
 
-  return None, "⚠️  No se pudo cargar la partida ni la copia de seguridad."
+    # 1. Intentar cargar el archivo principal de partida
+    if ARCHIVO_PARTIDA.exists():
+        try:
+            return _leer_y_reconstruir(ARCHIVO_PARTIDA), None
+        except json.JSONDecodeError:
+            corrupto = ARCHIVO_PARTIDA.with_name(ARCHIVO_PARTIDA.name + ".corrupto")
+            try:
+                shutil.copy2(ARCHIVO_PARTIDA, corrupto)
+            except OSError:
+                pass
+        except (OSError, ValueError):
+            # Si falló por validación o lectura, conservamos el archivo para diagnóstico
+            pass
+
+    # 2. Intentar recuperar desde el archivo de respaldo si existe
+    if ruta_backup.exists():
+        try:
+            datos = _leer_y_reconstruir(ruta_backup)
+            aviso = (
+                "⚠️ La partida principal estaba dañada. "
+                "Se restauró tu copia de seguridad."
+            )
+            return datos, aviso
+        except (OSError, json.JSONDecodeError, ValueError):
+            pass
+
+    return None, "⚠️  No se pudo cargar la partida ni la copia de seguridad."

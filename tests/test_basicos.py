@@ -1,13 +1,13 @@
-from modelos.pokemon import Pokemon, PokemonJugador, PokemonSalvaje
+from modelos.pokemon import Pokemon, PokemonAtrapado, PokemonSalvaje
 from sistemas.estadisticas import efectividad_tipos
 
 def pruebas_basicas():
-    """Pruebas sencillas de clases, herencia, validación y efectividad."""
+    '''Pruebas sencillas de clases, herencia, validación y efectividad.'''
     pokemon = Pokemon("Pikachu", 5)
     assert pokemon.nombre == "Pikachu"
     assert efectividad_tipos("agua", ("fuego",)) == 2.0
 
-    jugador = PokemonJugador("Charmander", 5, entrenador="Prueba")
+    jugador = PokemonAtrapado("Charmander", 5, entrenador="Prueba")
     assert jugador.entrenador == "Prueba"
     assert isinstance(jugador, Pokemon)
 
@@ -19,7 +19,7 @@ def pruebas_basicas():
     assert jugador.salud_actual == max(0, vida_inicial - 3)
 
     try:
-        PokemonJugador("Charmander", 5, entrenador="")
+        PokemonAtrapado("Charmander", 5, entrenador="")
     except ValueError:
         pass
     else:

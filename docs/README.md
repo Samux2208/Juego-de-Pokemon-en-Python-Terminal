@@ -43,9 +43,9 @@ El jugador asume el papel de un entrenador Pokémon que inicia su aventura en la
 
 La jerarquía principal de entidades del proyecto aplica herencia, polimorfismo y encapsulamiento:
 
-* **`Pokemon` (Clase madre):** Define los atributos y comportamientos comunes de cualquier criatura (estadísticas, movimientos, salud, estados y cálculo de daño).
-* **`PokemonJugador(Pokemon)` (Clase hija):** Extiende la clase base incorporando el nombre del entrenador, apodo personalizado, experiencia acumulada y control de subida de nivel.
-* **`PokemonSalvaje(Pokemon)` (Clase hija):** Extiende la clase base incorporando la ruta de aparición, rareza y parámetros específicos para el cálculo de captura.
+* **`Pokemon` (abuela):** Define estadísticas, movimientos, salud, estados alterados, recuperación de PP y el comportamiento de turno común.
+* **`PokemonCapturable(Pokemon)` (madre):** Agrega rareza y ruta de origen, usando `super()` para exportar y reconstruir los datos heredados.
+* **`PokemonSalvaje(PokemonCapturable)` y `PokemonAtrapado(PokemonCapturable)` (nietas):** El Pokémon salvaje puede capturarse; el atrapado conserva entrenador, apodo y su comportamiento de compañero. `PokemonJugador` se mantiene como alias compatible.
 
 ### Encapsulamiento en `Pokemon`
 * **Público (`+`):** `nivel`, `exp_actual`, `movimientos`, `estado_alterado` y propiedades (`@property`) como `nombre`, `salud_actual` y `salud_maxima`.
@@ -119,13 +119,16 @@ pokemon_frlg/
    ```bash
    python main.py
    ```
-   *(El menú principal incluye la opción **Demostración POO I** para la revisión académica rápida).*
 
-5. **Ejecutar las pruebas unitarias:**
+5. **Ejecuta las pruebas con `assert`:**
    ```bash
-   python -m tests.test_basicos
-   python -m tests.test_entrega1
+   python -m tests.test_entrega2
    ```
+
+## 🏆 Reglas para ganar o perder
+
+* **Victoria:** Desde el menú principal (opción 7) o el menú del pueblo (opción 5), desafía a Brock en el Gimnasio Plateada. Al vencerlo obtienes la **Medalla Roca**, aparece el mensaje **🏆 ¡VICTORIA! Has completado el desafío de Kanto** y la partida concluye.
+* **Derrota:** Si todo el equipo activo y el PC quedan sin Pokémon conscientes y no tienes Revivir, el juego anuncia **💀 DERROTA**. Perder el combate contra Brock también declara derrota y concluye la partida.
 
 ---
 
