@@ -20,7 +20,7 @@ El jugador asume el papel de un entrenador Pokémon que inicia su aventura en la
 6. **Economía y persistencia:** El jugador gana pokémonedas (`₽`) al vencer entrenadores para comprar objetos en la tienda y puede guardar o cargar su partida de forma atómica.
 
 ### 🏆 Condiciones de Victoria y Derrota
-* **Victoria:** Desde el menú principal (**opción 7**) o el menú del pueblo (**opción 5**), desafía a **Brock** en el Gimnasio de Ciudad Plateada. Al derrotarlo obtienes la **Medalla Roca**, aparece el mensaje **🏆 ¡VICTORIA! Has completado el desafío de Kanto** y la partida concluye.
+* **Victoria:** Desde el menú del pueblo (**opción 5**), desafía a **Brock** en el Gimnasio de Ciudad Plateada. Al derrotarlo obtienes la **Medalla Roca**, aparece el mensaje **🏆 ¡VICTORIA! Has completado el desafío de Kanto** y la partida concluye.
 * **Derrota:** Si todo el equipo activo y el PC quedan sin Pokémon conscientes y no cuentas con un *Revivir*, o si pierdes el combate contra Brock, el juego anuncia **💀 DERROTA** y concluye la partida.
 
 ---
