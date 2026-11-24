@@ -45,7 +45,6 @@ def pedir_opcion_menu_principal(nombre_entrenador: str, equipo, mochila) -> int:
     print(" ║  [4] 🎒 Mochila (Objetos y Evolución)              ║")
     print(" ║  [5] 💾 Guardar Partida                            ║")
     print(" ║  [6] 🚪 Salir del Juego                            ║")
-    print(" ║  [7] 🏅 Desafiar a Brock (Gimnasio Plateada)       ║")
     print(" ╚" + "═" * 52 + "╝")
 
     while True:
@@ -53,9 +52,9 @@ def pedir_opcion_menu_principal(nombre_entrenador: str, equipo, mochila) -> int:
             opcion = int(input(" 👉 ¿Qué deseas hacer?: "))
             if 1 <= opcion <= 7:
                 return opcion
-            print("\n ⚠️ Opción no válida. Elige del 1 al 7.")
+            print("\n ⚠️ Opción no válida. Elige del 1 al 6.")
         except ValueError:
-            print("\n ⚠️ Por favor, introduce un número del 1 al 7.")
+            print("\n ⚠️ Por favor, introduce un número del 1 al 6.")
 
 
 def pedir_pokemon_ficha(pokemones: list):

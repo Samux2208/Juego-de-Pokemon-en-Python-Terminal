@@ -95,4 +95,4 @@ Durante el desarrollo enfrentamos varios retos técnicos que resolvimos mediante
 * Ejecutar la aventura completa en terminal y hacer un playtest cronometrado de menos de ocho minutos.
 * Ajustar la dificultad de Brock y los textos después del playtest, sin añadir dependencias externas.
 * Ejecutar `python -m tests.test_entrega2` y verificar el guardado/carga en el equipo de presentación.
-* Implementar habilidades de cada pokémon y mejor progresión.
+* Implementar habilidades de cada pokémon y mejor progresión para añadir varios Gimnasios y mejor aleatoriedad.

@@ -13,7 +13,6 @@ from interfaz.inicio import (
     notificar_evento,
 )
 from interfaz.menus import (
-    desafiar_lider_gimnasio,
     gestionar_mochila,
     zona_segura,
     menu_rutas,
@@ -71,9 +70,4 @@ def iniciar_juego() -> None:
 
             case 6:
                 notificar_evento("salir")
-                break
-
-            case 7:
-                # El desafío es terminal: tanto la victoria como la caída cierran la partida.
-                desafiar_lider_gimnasio(nombre_entrenador, equipo, mochila)
                 break
