@@ -152,6 +152,3 @@ Proyecto desarrollado en equipo por:
 
 * **Samuel Alberto Castañeda Barros** — [@Samux2208](https://github.com/Samux2208)
 * **Adrian Fernando Caicedo Cejia** — [@anADRIAN18](https://github.com/anADRIAN18)
-
----
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Samux2208/Juego-de-Pokemon-en-Python-Terminal)
